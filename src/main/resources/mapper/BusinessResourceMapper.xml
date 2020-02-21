@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccloud.main.mapper.BusinessResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ccloud.main.entity.BusinessResource">
+        <id column="id" property="id" />
+        <result column="resource_code" property="resourceCode" />
+        <result column="resource_name" property="resourceName" />
+        <result column="resource_desc" property="resourceDesc" />
+        <result column="resource_type" property="resourceType" />
+        <result column="resource_pid" property="resourcePid" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, resource_code, resource_name, resource_desc, resource_type, resource_pid, create_time, update_time, status
+    </sql>
+    <select id="selectByRoleId" resultType="com.ccloud.main.entity.BusinessResource">
+        select * from business_resource br,business_role_resource brr where brr.role_id = br.id and brr.role_id = #{id}
+
+    </select>
+
+</mapper>
