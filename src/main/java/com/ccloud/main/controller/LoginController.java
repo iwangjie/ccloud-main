@@ -7,9 +7,11 @@ import com.ccloud.main.pojo.enumeration.ResultEnum;
 import com.ccloud.main.pojo.system.Result;
 import com.ccloud.main.util.MD5Tools;
 import com.ccloud.main.util.ResultUtil;
+import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +31,8 @@ public class LoginController extends BaseController {
     @Resource
     private BusinessUserLogic businessUserLogic;
 
+    @Resource
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public Result login(@RequestParam("username") String username, @RequestParam("password") String password) {
@@ -43,13 +47,11 @@ public class LoginController extends BaseController {
             return ResultUtil.error(ResultEnum.USER_PASSWORD_ERROR);
         }
 
-        SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password));
-        //设置session过期时间(毫秒)30分钟
-        SecurityUtils.getSubject().getSession().setTimeout(1800000);
-        return ResultUtil.success(user);
+        return ResultUtil.success(jwtUtil.sign(user.getId() + ""));
     }
 
     @PostMapping("/currUser")
+    @RequiresPermissions("user:currUser")
     public Result currUser() {
         return ResultUtil.success(UserManager.getCurrentUser());
     }

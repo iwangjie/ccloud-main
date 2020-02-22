@@ -2,6 +2,7 @@ package com.ccloud.main.mapper;
 
 import com.ccloud.main.entity.BusinessResource;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,5 +22,5 @@ public interface BusinessResourceMapper extends BaseMapper<BusinessResource> {
      * @param id
      * @return
      */
-    List<BusinessResource> selectByRoleId(Integer id);
+    List<BusinessResource> selectByRoleId(@Param("id") Integer id);
 }

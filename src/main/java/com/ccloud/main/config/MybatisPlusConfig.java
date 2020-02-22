@@ -25,16 +25,6 @@ public class MybatisPlusConfig {
     }
 
     /**
-     * 垃圾SQL拦截器
-     *
-     * @return
-     */
-    @Bean
-    public IllegalSQLInterceptor illegalSQLInterceptor() {
-        return new IllegalSQLInterceptor();
-    }
-
-    /**
      * 防止全表更新删除
      *
      * @return

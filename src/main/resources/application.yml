@@ -10,3 +10,25 @@ spring:
     # 常用请求与响应自动转下划线，空值字段不传输
     property-naming-strategy: SNAKE_CASE
     default-property-inclusion: non_null
+
+
+
+fastdep:
+  shiro-jwt:
+    filter: #shiro过滤规则
+      admin:
+        path: /**
+        role: jwt # jwt为需要进行token校验
+      user:
+        path: /login
+        role: anon # anon为无需校验
+    secret: "6Dx8SIuaHXJYnpsK18SSpjPs50lZcT52" # jwt秘钥
+#    expireTime: 7200000 # token有效期
+#    prefix: "Bearer "  # token校验时的前缀
+#    signPrefix: "Bearer " # token生成签名的前缀
+#    header: "Authorization" # token校验时的header头
+#    以下对应为shiro配置参数，无特殊需求无需配置
+#    loginUrl:
+#    successUrl:
+#    unauthorizedUrl:
+#    filterChainDefinitions:
