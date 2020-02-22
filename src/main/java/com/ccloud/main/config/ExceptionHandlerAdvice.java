@@ -8,6 +8,7 @@ import com.ccloud.main.util.exception.HandleTokenException;
 import com.ccloud.main.util.exception.ParamsErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,12 +42,12 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
         }
     }
 
-//    @ExceptionHandler(JSONException.class)
-//    Result<?> JSONExceptionHandle(HttpServletRequest request, Throwable ex) {
-//        ex.printStackTrace();
-//        log.error(ex.getMessage());
-//        return ResultUtil.error(ResultEnum.PARAMETER_FORMAT_ERROR);
-//    }
+    @ExceptionHandler(UnauthorizedException.class)
+    Result<?> JSONExceptionHandle(HttpServletRequest request, Throwable ex) {
+        ex.printStackTrace();
+        log.error(ex.getMessage());
+        return ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST);
+    }
 
     @ExceptionHandler(ParamsErrorException.class)
     Result<?> ParamsErrorExceptionHandle(HttpServletRequest request, Throwable ex) {

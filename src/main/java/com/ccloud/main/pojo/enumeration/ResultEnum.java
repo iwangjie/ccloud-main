@@ -32,7 +32,10 @@ public enum ResultEnum {
 
     // 用户相关
     USER_NOT_EXIST(200001, "用户不存在"),
-    USER_PASSWORD_ERROR(200002, "密码错误"),
+    USER_IS_EXIST(200002, "用户已存在"),
+    USER_PASSWORD_ERROR(200003, "密码错误"),
+    VERIFY_CODE_ERROR(200004, "验证码错误"),
+    PERMISSION_NOT_EXIST(200005, "暂无权限"),
 
 
     OTHER_ERROR(999999, "其他错误");

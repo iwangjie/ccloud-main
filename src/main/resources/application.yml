@@ -2,6 +2,11 @@ server:
   port: 8080
 
 spring:
+  cache:
+    redis:
+      time-to-live: 10s
+      key-prefix: 'c-cloud_'
+    type: redis
   application:
     name: ccloud-main
   profiles:
@@ -19,16 +24,19 @@ fastdep:
       admin:
         path: /**
         role: jwt # jwt为需要进行token校验
-      user:
-        path: /login
+      verifyCode:
+        path: /verifyCode
+        role: anon # anon为无需校验
+      reg:
+        path: /reg
         role: anon # anon为无需校验
     secret: "6Dx8SIuaHXJYnpsK18SSpjPs50lZcT52" # jwt秘钥
-#    expireTime: 7200000 # token有效期
-#    prefix: "Bearer "  # token校验时的前缀
-#    signPrefix: "Bearer " # token生成签名的前缀
-#    header: "Authorization" # token校验时的header头
-#    以下对应为shiro配置参数，无特殊需求无需配置
-#    loginUrl:
+    #    expireTime: 7200000 # token有效期
+    prefix: "C-Cloud "  # token校验时的前缀
+    signPrefix: "C-Cloud " # token生成签名的前缀
+    header: "CC-Authorization" # token校验时的header头
+    #    以下对应为shiro配置参数，无特殊需求无需配置
+    loginUrl: /login
 #    successUrl:
 #    unauthorizedUrl:
 #    filterChainDefinitions:
