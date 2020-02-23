@@ -6,6 +6,8 @@ target/
 mvnw
 mvnw.cmd
 .mvn/wrapper/**
+application-dev.yml
+application-prod.yml
 
 ### STS ###
 .apt_generated
