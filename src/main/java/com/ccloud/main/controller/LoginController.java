@@ -11,11 +11,12 @@ import com.ccloud.main.util.ResultUtil;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -71,7 +72,7 @@ public class LoginController extends BaseController {
             return ResultUtil.error(ResultEnum.USER_PASSWORD_ERROR);
         }
 
-        return ResultUtil.success(jwtUtil.sign(user.getId() + ""));
+        return ResultUtil.success(jwtUtil.sign(user.getId() + ":" + user.getPassword()));
     }
 
     /**
@@ -95,7 +96,7 @@ public class LoginController extends BaseController {
         if (user != null) {
             return ResultUtil.error(ResultEnum.USER_IS_EXIST);
         }
-        businessUserLogic.register(username,password);
+        businessUserLogic.register(username, password);
         return ResultUtil.success("注册成功");
     }
 

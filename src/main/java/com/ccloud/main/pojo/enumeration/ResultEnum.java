@@ -36,6 +36,7 @@ public enum ResultEnum {
     USER_PASSWORD_ERROR(200003, "密码错误"),
     VERIFY_CODE_ERROR(200004, "验证码错误"),
     PERMISSION_NOT_EXIST(200005, "暂无权限"),
+    LOGIN_STATUS_FAIL(200006, "登录信息失效"),
 
 
     OTHER_ERROR(999999, "其他错误");
