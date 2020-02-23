@@ -32,7 +32,7 @@
 
 [MIT](LICENSE)
 
-## 感谢以下开源项目..
+## 感谢以下开源项目
 
 + [SpringBoot](https://github.com/spring-projects/spring-boot)
 + [mybatis-plus](https://github.com/baomidou/mybatis-plus)
