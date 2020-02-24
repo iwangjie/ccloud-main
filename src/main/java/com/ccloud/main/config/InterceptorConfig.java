@@ -2,6 +2,7 @@ package com.ccloud.main.config;
 
 import com.ccloud.main.service.IBusinessAppBaseConfigService;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -10,11 +11,11 @@ import javax.annotation.Resource;
 /**
  * @author wangjie
  */
-@Configuration
+//@Component
 public class InterceptorConfig extends WebMvcConfigurationSupport {
 
     @Resource
-    private PermissionsInterceptor permissionsInterceptor;
+    private AppIdPermissionsInterceptor permissionsInterceptor;
 
     /**
      * interceptor配置
@@ -33,6 +34,7 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/js/**")
                 .excludePathPatterns("/images/**");
         //这里可以用registry.addInterceptor添加多个拦截器实例，后面加上匹配模式
-        super.addInterceptors(registry);//最后将register往这里塞进去就可以了
+        //最后将register往这里塞进去就可以了
+        super.addInterceptors(registry);
     }
 }

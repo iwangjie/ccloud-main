@@ -7,6 +7,7 @@ import com.ccloud.main.util.exception.ParamsErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -21,7 +22,7 @@ import java.util.Map;
  *
  * @author wangjie
  */
-@Configuration
+@Component
 @Slf4j
 public class AppIdPermissionsInterceptor extends HandlerInterceptorAdapter {
 
@@ -31,11 +32,16 @@ public class AppIdPermissionsInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         Map pathVariables = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         String appId = (String) pathVariables.get("appId");
         log.info("appId:{}", appId);
         if (StringUtils.isBlank(appId)) {
-            return true;
+            return;
         }
 
         // 判断权限
@@ -46,12 +52,6 @@ public class AppIdPermissionsInterceptor extends HandlerInterceptorAdapter {
         if (businessAppBaseConfig.getBusinessUserId().equals(UserManager.getCurrentUser().getId())) {
             throw new ParamsErrorException();
         }
-
-        return true;
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
     }
 

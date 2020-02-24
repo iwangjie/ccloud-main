@@ -1,5 +1,6 @@
 package com.ccloud.main.controller;
 
+import com.ccloud.main.util.JSONObject;
 import com.ccloud.main.util.JsonUtils;
 import com.ccloud.main.util.exception.HandleTokenException;
 import lombok.extern.slf4j.Slf4j;
@@ -72,6 +73,16 @@ public class BaseController {
         return getJsonParam(JsonUtils.toMap(paramData));
     }
 
+
+    /**
+     * 处理请求参数（String转Json类型）检查token并在返回时添加当前用户userId
+     *
+     * @param paramData
+     * @return
+     */
+    JSONObject getJsonObject(String paramData) {
+        return new JSONObject(JsonUtils.toMap(paramData));
+    }
 
     /**
      * 处理请求参数（String转Json类型）检查token并在返回时添加当前用户userId

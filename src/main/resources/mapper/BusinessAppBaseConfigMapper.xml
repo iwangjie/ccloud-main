@@ -4,16 +4,16 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.ccloud.main.entity.BusinessAppBaseConfig">
-        <id column="id" property="id" />
-        <result column="business_user_id" property="businessUserId" />
-        <result column="app_name" property="appName" />
-        <result column="app_pack" property="appPack" />
-        <result column="app_icon" property="appIcon" />
-        <result column="app_desc" property="appDesc" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="app_status" property="appStatus" />
-        <result column="status" property="status" />
+        <id column="id" property="id"/>
+        <result column="business_user_id" property="businessUserId"/>
+        <result column="app_name" property="appName"/>
+        <result column="app_pack" property="appPack"/>
+        <result column="app_icon" property="appIcon"/>
+        <result column="app_desc" property="appDesc"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="app_status" property="appStatus"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

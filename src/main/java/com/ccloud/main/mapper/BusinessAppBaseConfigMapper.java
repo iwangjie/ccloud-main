@@ -2,6 +2,10 @@ package com.ccloud.main.mapper;
 
 import com.ccloud.main.entity.BusinessAppBaseConfig;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ccloud.main.entity.BusinessNoticeBaseConfig;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface BusinessAppBaseConfigMapper extends BaseMapper<BusinessAppBaseConfig> {
 
+    BusinessNoticeBaseConfig getLastNoticeByAppId(@Param("userId") Integer userId, @Param("appId") String appId);
+
+    List<BusinessNoticeBaseConfig> getAllNoticeByAppId(@Param("userId") Integer userId, @Param("appId") String appId);
 }

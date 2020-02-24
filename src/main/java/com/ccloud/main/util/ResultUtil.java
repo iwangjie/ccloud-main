@@ -4,6 +4,8 @@ import com.ccloud.main.pojo.enumeration.ResultEnum;
 import com.ccloud.main.pojo.system.Result;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
+
 
 /**
  * 响应工具类
@@ -16,14 +18,17 @@ public class ResultUtil {
      * 成功但不带数据
      **/
     public static Result<Object> success() {
-        return success(null);
+        return new Result<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(), null);
     }
 
     /**
      * 成功且带数据
      **/
     public static Result<Object> success(Object object) {
-        return null != object ? new Result<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(), object) : new Result<>(ResultEnum.SUCCESS_NULL.getCode(), ResultEnum.SUCCESS_NULL.getMsg(), StringUtils.EMPTY);
+        if (object == null) {
+            return new Result<>(ResultEnum.SUCCESS_NULL.getCode(), ResultEnum.SUCCESS_NULL.getMsg(), null);
+        }
+        return new Result<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(), object);
     }
 
     /**

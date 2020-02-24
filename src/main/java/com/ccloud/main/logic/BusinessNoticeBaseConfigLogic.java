@@ -1,12 +1,11 @@
 package com.ccloud.main.logic;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ccloud.main.entity.BusinessNoticeBaseConfig;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.mapper.BusinessNoticeBaseConfigMapper;
-import com.ccloud.main.service.IBusinessNoticeBaseConfigService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,11 +20,18 @@ import java.util.List;
 public class BusinessNoticeBaseConfigLogic {
 
 
+    @Resource
+    private BusinessNoticeBaseConfigMapper businessNoticeBaseConfigMapper;
+
     public BusinessNoticeBaseConfig getLastNoticeByAppId(BusinessUser currentUser, String appId) {
-        return null;
+        return businessNoticeBaseConfigMapper.getLastNoticeByAppId(currentUser.getId(), appId);
     }
 
     public List<BusinessNoticeBaseConfig> getAllNoticeByAppId(BusinessUser currentUser, String appId) {
-        return null;
+        return businessNoticeBaseConfigMapper.getAllNoticeByAppId(currentUser.getId(), appId);
+    }
+
+    public BusinessNoticeBaseConfig getLastNoticeById(BusinessUser currentUser, String appId, String noticeId) {
+        return businessNoticeBaseConfigMapper.selectById(noticeId);
     }
 }

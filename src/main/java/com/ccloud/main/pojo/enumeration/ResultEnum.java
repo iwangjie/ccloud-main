@@ -13,11 +13,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ResultEnum {
-    SYSTEM_ERROR(-1, "系统错误"),
+    SYSTEM_ERROR(-999, "系统错误"),
     //正常
     SUCCESS(0, "成功"),
     //正常，但数据是空的
-    SUCCESS_NULL(0, "暂无数据"),
+    SUCCESS_NULL(-1, "暂无数据"),
 
     /*
      * 错误：访问、参数
