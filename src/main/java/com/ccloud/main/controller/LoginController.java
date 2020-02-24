@@ -8,15 +8,13 @@ import com.ccloud.main.pojo.system.Result;
 import com.ccloud.main.service.IBusinessUserService;
 import com.ccloud.main.util.MD5Tools;
 import com.ccloud.main.util.ResultUtil;
+import com.ccloud.main.util.annotation.RequestJson;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -60,7 +58,7 @@ public class LoginController extends BaseController {
      * @return
      */
     @PostMapping("/login")
-    public Result login(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public Result login(@RequestJson("username") String username, @RequestJson("password") String password) {
 
         BusinessUser user = businessUserLogic.findByName(username);
         if (user == null) {
@@ -84,7 +82,7 @@ public class LoginController extends BaseController {
      * @return
      */
     @PostMapping("/reg")
-    public Result reg(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("code") String code) {
+    public Result reg(HttpServletRequest request, @RequestJson("username") String username, @RequestJson("password") String password, @RequestJson("code") String code) {
 
         String VERIFY_CODE = (String) request.getSession().getAttribute(VERIFY_CODE_KEY);
         if (!code.equals(VERIFY_CODE)) {

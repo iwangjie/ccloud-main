@@ -9,8 +9,12 @@ import com.ccloud.main.pojo.query.NoticePageQueryVo;
 import com.ccloud.main.pojo.system.Result;
 import com.ccloud.main.service.IBusinessNoticeBaseConfigService;
 import com.ccloud.main.util.ResultUtil;
+import com.ccloud.main.util.annotation.RequestJson;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -38,7 +42,7 @@ public class BusinessNoticeBaseConfigController extends BaseController {
      * @return
      */
     @PostMapping("/last")
-    public Result<Object> last(@RequestParam("appId") Integer appId) {
+    public Result<Object> last(@RequestJson("appId") Integer appId) {
         BusinessUser currentUser = UserManager.getCurrentUser();
         BusinessNoticeBaseConfig businessNoticeBaseConfig = businessNoticeBaseConfigLogic.getLastNoticeByAppId(currentUser, appId);
         return ResultUtil.success(businessNoticeBaseConfig);
@@ -52,7 +56,7 @@ public class BusinessNoticeBaseConfigController extends BaseController {
      * @return
      */
     @PostMapping("/id")
-    public Result<Object> getNotIceById(@RequestParam("appId") Integer appId, @RequestParam("noticeId") Integer noticeId) {
+    public Result<Object> getNotIceById(@RequestJson("appId") Integer appId, @RequestJson("noticeId") Integer noticeId) {
         BusinessUser currentUser = UserManager.getCurrentUser();
         BusinessNoticeBaseConfig businessNoticeBaseConfig = businessNoticeBaseConfigLogic.getLastNoticeById(currentUser, appId, noticeId);
         return ResultUtil.success(businessNoticeBaseConfig);
@@ -65,7 +69,7 @@ public class BusinessNoticeBaseConfigController extends BaseController {
      * @return
      */
     @PostMapping("/page")
-    public Result<Object> page(NoticePageQueryVo noticePageQueryVo) {
+    public Result<Object> page(@RequestBody NoticePageQueryVo noticePageQueryVo) {
         Page page = new Page<>(noticePageQueryVo.getCurrent(), noticePageQueryVo.getSize());
         BusinessUser currentUser = UserManager.getCurrentUser();
         List<BusinessNoticeBaseConfig> noticeBaseConfigs = businessNoticeBaseConfigLogic.getPageNoticeByAppId(page, currentUser, noticePageQueryVo.getAppId());
@@ -80,7 +84,7 @@ public class BusinessNoticeBaseConfigController extends BaseController {
      * @return
      */
     @PostMapping("/all")
-    public Result<Object> all(@RequestParam("appId") Integer appId) {
+    public Result<Object> all(@RequestJson("appId") Integer appId) {
         BusinessUser currentUser = UserManager.getCurrentUser();
         List<BusinessNoticeBaseConfig> noticeBaseConfigs = businessNoticeBaseConfigLogic.getAllNoticeByAppId(currentUser, appId);
         return ResultUtil.success(noticeBaseConfigs);
@@ -94,7 +98,7 @@ public class BusinessNoticeBaseConfigController extends BaseController {
      * @return
      */
     @PostMapping("/save")
-    public Result<Object> save(BusinessNoticeBaseConfig businessNoticeBaseConfig) {
+    public Result<Object> save(@RequestBody BusinessNoticeBaseConfig businessNoticeBaseConfig) {
         iBusinessNoticeBaseConfigService.save(businessNoticeBaseConfig);
         return ResultUtil.success();
     }
@@ -106,7 +110,7 @@ public class BusinessNoticeBaseConfigController extends BaseController {
      * @return
      */
     @PostMapping("/update")
-    public Result<Object> update(BusinessNoticeBaseConfig businessNoticeBaseConfig) {
+    public Result<Object> update(@RequestBody BusinessNoticeBaseConfig businessNoticeBaseConfig) {
         iBusinessNoticeBaseConfigService.updateById(businessNoticeBaseConfig);
         return ResultUtil.success();
     }
