@@ -17,20 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * 权限拦截器
+ * appId 权限拦截器
  *
  * @author wangjie
  */
 @Configuration
 @Slf4j
-public class PermissionsInterceptor extends HandlerInterceptorAdapter {
+public class AppIdPermissionsInterceptor extends HandlerInterceptorAdapter {
 
     @Resource
     private IBusinessAppBaseConfigService iBusinessAppBaseConfigService;
-//
-//    public PermissionsInterceptor(IBusinessAppBaseConfigService iBusinessAppBaseConfigService) {
-//        this.iBusinessAppBaseConfigService = iBusinessAppBaseConfigService;
-//    }
 
 
     @Override
