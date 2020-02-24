@@ -65,7 +65,7 @@ public class BusinessNoticeBaseConfigController extends BaseController {
      * @return
      */
     @PostMapping("/page")
-    public Result<Object> page(@RequestBody NoticePageQueryVo noticePageQueryVo) {
+    public Result<Object> page(NoticePageQueryVo noticePageQueryVo) {
         Page page = new Page<>(noticePageQueryVo.getCurrent(), noticePageQueryVo.getSize());
         BusinessUser currentUser = UserManager.getCurrentUser();
         List<BusinessNoticeBaseConfig> noticeBaseConfigs = businessNoticeBaseConfigLogic.getPageNoticeByAppId(page, currentUser, noticePageQueryVo.getAppId());
