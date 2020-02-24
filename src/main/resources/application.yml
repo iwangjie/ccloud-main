@@ -1,6 +1,12 @@
 server:
   port: 8080
 
+swagger:
+  print-init: true #非必需,默认true,控制台打印swagger url
+  enabled: true #非必需,默认true
+  docket:
+    base-package: com.ccloud.main.controller   #必需
+
 spring:
   cache:
     redis:
@@ -33,6 +39,18 @@ fastdep:
       login:
         path: /login
         role: anon # anon为无需校验
+      swagger:
+        path: /swagger-ui.html
+        role: anon
+      swagger-webjar:
+        path: /webjars/**
+        role: anon
+      swagger-v2:
+        path: /v2/**
+        role: anon
+      swagger-resource:
+        path: /swagger-resources/**
+        role: anon
     secret: "6Dx8SIuaHXJYnpsK18SSpjPs50lZcT52" # jwt秘钥
     #    expireTime: 7200000 # token有效期
     prefix: "C-Cloud "  # token校验时的前缀

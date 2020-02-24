@@ -1,12 +1,11 @@
 package com.ccloud.main.config.shiro;
 
-import com.ccloud.main.config.shiro.UserManager;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ccloud.main.entity.BusinessResource;
 import com.ccloud.main.entity.BusinessRole;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.logic.BusinessResourceLogic;
 import com.ccloud.main.logic.BusinessRoleLogic;
-import com.ccloud.main.logic.BusinessUserLogic;
 import com.ccloud.main.util.exception.HandleTokenException;
 import com.louislivi.fastdep.shirojwt.shiro.FastDepShiroJwtAuthorization;
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +38,15 @@ public class ShiroJwtConfig extends FastDepShiroJwtAuthorization {
     @Override
     public SimpleAuthorizationInfo getAuthorizationInfo(String userId) {
         String[] idAndPass = userId.split(":");
-        BusinessUser user = IBusinessUserService.getById(idAndPass[0]);
+//        BusinessUser user = IBusinessUserService.getById(idAndPass[0]);
 
+        BusinessUser user = IBusinessUserService.getOne(new LambdaQueryWrapper<BusinessUser>().eq(BusinessUser::getId, idAndPass[0]).eq(BusinessUser::getStatus, 0));
+
+        if (user == null) {
+            throw new HandleTokenException();
+        }
         // 比对密码字段
         if (!idAndPass[1].equals(user.getPassword())) {
-        }
-        // 判断用户状态
-        if (user.getStatus() != 0) {
             throw new HandleTokenException();
         }
 
