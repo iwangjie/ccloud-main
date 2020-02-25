@@ -1,5 +1,6 @@
 package com.ccloud.main;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,12 +9,14 @@ import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * CCLOUD 启动类
+ *
  * @author wangjie
  */
 @SpringBootApplication
 @EnableCaching
 @ServletComponentScan
 @MapperScan("com.ccloud.main.mapper")  //配置mapper扫描
+@Slf4j
 public class Application {
 
     public static void main(String[] args) {

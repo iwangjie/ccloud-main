@@ -1,5 +1,12 @@
 server:
   port: 8080
+  tomcat:
+    #tomcat的url编码为utf-8，解决中文乱码的问题。
+    uri-encoding: utf-8
+    #tomcat允许的post最大值为1GB
+    max-http-form-post-size: 1073741824
+  servlet:
+    context-path: /ccloud
 
 swagger:
   print-init: true #非必需,默认true,控制台打印swagger url
