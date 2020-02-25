@@ -16,14 +16,34 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <!-- 编译编码 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <pagehelper.version>4.1.6</pagehelper.version>
+
+        <knife4j-spring-ui.version>1.9.6</knife4j-spring-ui.version>
+        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <swagger.version>2.9.2</swagger.version>
+        <commons-lang3.version>3.9</commons-lang3.version>
+        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <hutool.version>5.1.2</hutool.version>
+
     </properties>
 
     <dependencies>
 
         <dependency>
-            <groupId>io.github.wilson-he</groupId>
-            <artifactId>swagger2-spring-boot-starter</artifactId>
-            <version>1.1.0</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-ui</artifactId>
+            <version>${knife4j-spring-ui.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -31,7 +51,6 @@
             <version>2.6</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.penggle/kaptcha -->
         <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
@@ -54,7 +73,6 @@
             <version>1.0.3</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -62,7 +80,6 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -70,7 +87,6 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
@@ -78,7 +94,6 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -86,7 +101,6 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jdk8</artifactId>
@@ -94,7 +108,6 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -116,7 +129,6 @@
             <artifactId>mybatis-plus-extension</artifactId>
             <version>3.3.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -141,8 +153,6 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
