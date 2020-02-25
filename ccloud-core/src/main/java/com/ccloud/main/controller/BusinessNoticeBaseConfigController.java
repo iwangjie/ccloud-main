@@ -10,6 +10,7 @@ import com.ccloud.main.pojo.system.Result;
 import com.ccloud.main.service.IBusinessNoticeBaseConfigService;
 import com.ccloud.main.util.ResultUtil;
 import com.ccloud.main.util.annotation.RequestJson;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/notice")
 @Slf4j
+@Api(tags = {"公告管理"})
 public class BusinessNoticeBaseConfigController extends BaseController {
 
     @Resource

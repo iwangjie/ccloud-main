@@ -1,6 +1,5 @@
 package com.ccloud.main.controller;
 
-import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.logic.BusinessUserLogic;
 import com.ccloud.main.pojo.enumeration.ResultEnum;
@@ -11,10 +10,13 @@ import com.ccloud.main.util.ResultUtil;
 import com.ccloud.main.util.annotation.RequestJson;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -31,6 +33,7 @@ import java.io.ByteArrayOutputStream;
  */
 @RestController
 @Slf4j
+@Api(tags = {"登录管理"})
 public class LoginController extends BaseController {
 
     @Resource
@@ -136,7 +139,8 @@ public class LoginController extends BaseController {
     @PostMapping("/currUser")
     @RequiresPermissions("user:currUser")
     public Result currUser() {
-        return ResultUtil.success(UserManager.getCurrentUser());
+        //UserManager.getCurrentUser()
+        return ResultUtil.success(jwtUtil.getUserId());
     }
 
 

@@ -71,3 +71,12 @@ fastdep:
 #    successUrl:
 #    unauthorizedUrl:
 #    filterChainDefinitions:
+#mybatis-plus
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+    banner: false
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
