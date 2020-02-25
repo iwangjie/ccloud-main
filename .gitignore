@@ -8,6 +8,7 @@ mvnw.cmd
 .mvn/wrapper/**
 application-dev.yml
 application-prod.yml
+/ccloud-generator/src/main/resources/db.properties
 
 ### STS ###
 .apt_generated

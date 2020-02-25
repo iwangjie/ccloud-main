@@ -11,18 +11,34 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
  * Created by Junfu on 2019-02-20
  */
 class CodeGenerator {
+    private static Properties dbProperties;
+    private static String url;
+    private static String DRIVER_CLASS;
+    private static String USER_NAME;
+    private static String PASSWORD;
+
     /**
      * 读取控制台内容
      */
-    private static String scanner() {
+    private static String scanner() throws IOException {
+        dbProperties = new Properties();
+        dbProperties.load(CodeGenerator.class.getClassLoader().getResourceAsStream("db.properties"));
+        url = dbProperties.getProperty("url");
+        DRIVER_CLASS = dbProperties.getProperty("driverClass");
+        USER_NAME = dbProperties.getProperty("username");
+        PASSWORD = dbProperties.getProperty("password");
+
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("请输入" + "表名" + "：");
         if (scanner.hasNext()) {
@@ -34,7 +50,7 @@ class CodeGenerator {
         throw new MybatisPlusException("请输入正确的" + "表名" + "！");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         AutoGenerator mpg = new AutoGenerator();// 代码生成器
 
         GlobalConfig gc = new GlobalConfig();// 全局配置
@@ -49,11 +65,11 @@ class CodeGenerator {
         mpg.setGlobalConfig(gc);
 
         DataSourceConfig dsc = new DataSourceConfig();// 数据源配置
-        dsc.setUrl("jdbc:mysql://localhost:3306/ccloud?useUnicode=true&characterEncoding=utf8");
+        dsc.setUrl(url);
         // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setDriverName(DRIVER_CLASS);
+        dsc.setUsername(USER_NAME);
+        dsc.setPassword(PASSWORD);
 
         mpg.setDataSource(dsc);
 
