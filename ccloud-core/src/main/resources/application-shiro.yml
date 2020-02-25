@@ -1,0 +1,40 @@
+fastdep:
+  shiro-jwt:
+    filter: #shiro过滤规则
+      admin:
+        path: /**
+        role: jwt # jwt为需要进行token校验
+      verifyCode:
+        path: /verifyCode
+        role: anon # anon为无需校验
+      reg:
+        path: /reg
+        role: anon # anon为无需校验
+      login:
+        path: /login
+        role: anon # anon为无需校验
+      swagger:
+        path: /swagger-ui.html
+        role: anon
+      swagger-webjar:
+        path: /webjars/**
+        role: anon
+      swagger-v2:
+        path: /v2/**
+        role: anon
+      swagger-resource:
+        path: /swagger-resources/**
+        role: anon
+      swagger-doc:
+        path: /doc.html
+        role: anon
+    secret: "6Dx8SIuaHXJYnpsK18SSpjPs50lZcT52" # jwt秘钥
+    #    expireTime: 7200000 # token有效期
+    prefix: "C-Cloud "  # token校验时的前缀
+    signPrefix: "C-Cloud " # token生成签名的前缀
+    header: "CC-Authorization" # token校验时的header头
+    #    以下对应为shiro配置参数，无特殊需求无需配置
+#    loginUrl: /login
+#    successUrl:
+#    unauthorizedUrl:
+#    filterChainDefinitions:
