@@ -9,7 +9,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>ccould-common</artifactId>
+
+    <artifactId>ccloud-core</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ccloud</groupId>
+            <artifactId>ccloud-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.louislivi.fastdep</groupId>
+            <artifactId>fastdep-shiro-jwt</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+
+    </dependencies>
 
 
 </project>
