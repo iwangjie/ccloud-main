@@ -53,16 +53,36 @@ public class BusinessUpdateBaseConfigLogic {
     /**
      * 根据版本号检查更新
      *
+     * @param appId
      * @param versionId
      * @return
      */
-    public BusinessUpdateBaseConfig getUpdateByVersionId(String versionId) {
+    public BusinessUpdateBaseConfig getUpdateByVersionId(Integer appId, String versionId) {
         BusinessUpdateBaseConfig businessUpdateBaseConfig = businessUpdateBaseConfigMapper
                 .selectOne(new LambdaQueryWrapper<BusinessUpdateBaseConfig>()
-                        .gt(BusinessUpdateBaseConfig::getVersionId, versionId)
+                        .eq(BusinessUpdateBaseConfig::getAppId, appId)
                         .eq(BusinessUpdateBaseConfig::getStatus, 0)
+                        .gt(BusinessUpdateBaseConfig::getVersionId, versionId)
                         .orderByDesc(BusinessUpdateBaseConfig::getVersionId)
                         .last("limit 0,1"));
         return businessUpdateBaseConfig;
+    }
+
+    /**
+     * 获取更新日志-最近10个版本
+     *
+     * @param appId
+     * @param versionId
+     */
+    public void getUpdateLog(Integer appId, String versionId) {
+        businessUpdateBaseConfigMapper
+                .selectOne(new LambdaQueryWrapper<BusinessUpdateBaseConfig>()
+                        .eq(BusinessUpdateBaseConfig::getAppId, appId)
+                        .eq(BusinessUpdateBaseConfig::getStatus, 0)
+                        .le(BusinessUpdateBaseConfig::getVersionId, versionId)
+                        .orderByDesc(BusinessUpdateBaseConfig::getVersionId)
+                        .last("limit 0,10"));
+
+
     }
 }
