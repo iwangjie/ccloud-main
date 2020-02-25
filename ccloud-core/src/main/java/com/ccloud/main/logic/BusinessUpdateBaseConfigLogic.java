@@ -73,15 +73,17 @@ public class BusinessUpdateBaseConfigLogic {
      *
      * @param appId
      * @param versionId
+     * @return
      */
-    public void getUpdateLog(Integer appId, String versionId) {
-        businessUpdateBaseConfigMapper
-                .selectOne(new LambdaQueryWrapper<BusinessUpdateBaseConfig>()
+    public List<BusinessUpdateBaseConfig> getUpdateLog(Integer appId, String versionId) {
+        List<BusinessUpdateBaseConfig> businessUpdateBaseConfigs = businessUpdateBaseConfigMapper
+                .selectList(new LambdaQueryWrapper<BusinessUpdateBaseConfig>()
                         .eq(BusinessUpdateBaseConfig::getAppId, appId)
                         .eq(BusinessUpdateBaseConfig::getStatus, 0)
                         .le(BusinessUpdateBaseConfig::getVersionId, versionId)
                         .orderByDesc(BusinessUpdateBaseConfig::getVersionId)
                         .last("limit 0,10"));
+        return businessUpdateBaseConfigs;
 
 
     }

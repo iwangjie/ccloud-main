@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 公告 Controller
@@ -54,8 +55,8 @@ public class ClientUpdateController {
      */
     @PostMapping("/log")
     public Result log(@RequestJson("appId") Integer appId, @RequestJson("versionId") String versionId) {
-        businessUpdateBaseConfigLogic.getUpdateLog(appId, versionId);
-        return ResultUtil.success();
+        List<BusinessUpdateBaseConfig> updateLog = businessUpdateBaseConfigLogic.getUpdateLog(appId, versionId);
+        return ResultUtil.success(updateLog);
     }
 
 
