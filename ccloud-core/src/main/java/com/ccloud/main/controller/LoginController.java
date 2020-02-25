@@ -1,5 +1,6 @@
 package com.ccloud.main.controller;
 
+import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.logic.BusinessUserLogic;
 import com.ccloud.main.pojo.enumeration.ResultEnum;
@@ -139,8 +140,8 @@ public class LoginController extends BaseController {
     @PostMapping("/currUser")
     @RequiresPermissions("user:currUser")
     public Result currUser() {
-        //UserManager.getCurrentUser()
-        return ResultUtil.success(jwtUtil.getUserId());
+        System.out.println();
+        return ResultUtil.success(UserManager.getCurrentUser());
     }
 
 
