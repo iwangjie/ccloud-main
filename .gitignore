@@ -6,8 +6,8 @@ target/
 mvnw
 mvnw.cmd
 .mvn/wrapper/**
-application-dev.yml
-application-prod.yml
+application-*.yml
+application-*.yml
 /ccloud-generator/src/main/resources/db.properties
 
 ### STS ###
