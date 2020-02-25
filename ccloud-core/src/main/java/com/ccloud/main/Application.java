@@ -21,6 +21,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        System.out.println("启动完毕\r\napi doc -> http://localhost:8080/ccloud/doc.html");
     }
 
 }
