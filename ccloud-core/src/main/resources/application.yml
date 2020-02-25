@@ -77,6 +77,6 @@ mybatis-plus:
     db-config:
       id-type: auto
     banner: false
-  mapper-locations: classpath*:/mapper/**/*.xml
+  mapper-locations: classpath*:com/ccloud/main/mapper/xml/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

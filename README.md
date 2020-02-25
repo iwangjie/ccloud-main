@@ -38,4 +38,5 @@
 + [mybatis-plus](https://github.com/baomidou/mybatis-plus)
 + [shiro](https://github.com/apache/shiro)
 + [lang3](https://github.com/apache/commons-lang) 
++ [xiaominfo](https://doc.xiaominfo.com/guide/) 
  

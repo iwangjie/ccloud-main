@@ -26,6 +26,32 @@
 
     </dependencies>
     <build>
+        <resources>
+            <!-- 把java目录下的xml文件复制到classes下，否则mybatis的xml文件不会被打包 -->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <!--
+                filtering和filters搭配使用。
+                filtering为true时，会把filters里面的键值对来填充includes指定文件里的${xxxx}占位符。
+                -->
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                </includes>
+                <!--
+                filtering和filters搭配使用。
+                filtering为true时，会把filters里面的键值对来填充includes指定文件里的${xxxx}占位符。
+                -->
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
