@@ -14,9 +14,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ccloud</groupId>
-    <artifactId>ccould-admin</artifactId>
+    <artifactId>ccloud-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <!--    <name>main</name>-->
+      <name>ccould-parent</name>
     <description>ccould-admin</description>
 
     <properties>
