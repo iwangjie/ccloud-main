@@ -35,12 +35,13 @@ public class ClientUpdateController {
     /**
      * 检查更新
      *
+     * @param appId
      * @param versionId
      * @return
      */
     @PostMapping("/version")
-    public Result version(@RequestJson("versionId") String versionId) {
-        BusinessUpdateBaseConfig businessUpdateBaseConfig = businessUpdateBaseConfigLogic.getUpdateByVersionId(versionId);
+    public Result version(@RequestJson("appId") Integer appId, @RequestJson("versionId") String versionId) {
+        BusinessUpdateBaseConfig businessUpdateBaseConfig = businessUpdateBaseConfigLogic.getUpdateByVersionId(appId, versionId);
         return ResultUtil.success(businessUpdateBaseConfig);
     }
 
@@ -48,12 +49,12 @@ public class ClientUpdateController {
     /**
      * 更新日志
      *
-     * @param versionId
+     * @param appId
      * @return
      */
     @PostMapping("/log")
-    public Result log(@RequestJson("versionId") String versionId) {
-//        businessUpdateBaseConfigLogic.getUpdateLog();
+    public Result log(@RequestJson("appId") Integer appId, @RequestJson("versionId") String versionId) {
+        businessUpdateBaseConfigLogic.getUpdateLog(appId, versionId);
         return ResultUtil.success();
     }
 
