@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/notice")
 @Slf4j
 @Api(tags = {"公告管理"})
-public class BusinessNoticeBaseConfigController extends BaseController {
+public class BusinessNoticeController extends BaseController {
 
     @Resource
     private BusinessNoticeBaseConfigLogic businessNoticeBaseConfigLogic;

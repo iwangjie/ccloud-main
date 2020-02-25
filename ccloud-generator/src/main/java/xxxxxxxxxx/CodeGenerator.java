@@ -31,14 +31,6 @@ class CodeGenerator {
      * 读取控制台内容
      */
     private static String scanner() throws IOException {
-        dbProperties = new Properties();
-        dbProperties.load(CodeGenerator.class.getClassLoader().getResourceAsStream("db.properties"));
-        url = dbProperties.getProperty("url");
-        DRIVER_CLASS = dbProperties.getProperty("driverClass");
-        USER_NAME = dbProperties.getProperty("username");
-        PASSWORD = dbProperties.getProperty("password");
-
-
         Scanner scanner = new Scanner(System.in);
         System.out.println("请输入" + "表名" + "：");
         if (scanner.hasNext()) {
@@ -51,11 +43,19 @@ class CodeGenerator {
     }
 
     public static void main(String[] args) throws IOException {
+        dbProperties = new Properties();
+        dbProperties.load(CodeGenerator.class.getClassLoader().getResourceAsStream("db.properties"));
+        url = dbProperties.getProperty("url");
+        DRIVER_CLASS = dbProperties.getProperty("driverClass");
+        USER_NAME = dbProperties.getProperty("username");
+        PASSWORD = dbProperties.getProperty("password");
+
+
         AutoGenerator mpg = new AutoGenerator();// 代码生成器
 
         GlobalConfig gc = new GlobalConfig();// 全局配置
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "/src/main/java");
+        gc.setOutputDir(projectPath + "/ccloud-core/src/main/java");
         gc.setAuthor("Generator");
         gc.setOpen(false);
         gc.setFileOverride(true);

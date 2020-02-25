@@ -49,4 +49,20 @@ public class BusinessUpdateBaseConfigLogic {
                 eq(BusinessUpdateBaseConfig::getStatus, 0).
                 orderByDesc(BusinessUpdateBaseConfig::getCreateTime));
     }
+
+    /**
+     * 根据版本号检查更新
+     *
+     * @param versionId
+     * @return
+     */
+    public BusinessUpdateBaseConfig getUpdateByVersionId(String versionId) {
+        BusinessUpdateBaseConfig businessUpdateBaseConfig = businessUpdateBaseConfigMapper
+                .selectOne(new LambdaQueryWrapper<BusinessUpdateBaseConfig>()
+                        .gt(BusinessUpdateBaseConfig::getVersionId, versionId)
+                        .eq(BusinessUpdateBaseConfig::getStatus, 0)
+                        .orderByDesc(BusinessUpdateBaseConfig::getVersionId)
+                        .last("limit 0,1"));
+        return businessUpdateBaseConfig;
+    }
 }
