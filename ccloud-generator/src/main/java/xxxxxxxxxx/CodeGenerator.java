@@ -1,4 +1,4 @@
-package com.ccloud.main.util;
+package xxxxxxxxxx;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;

@@ -1,4 +1,4 @@
-package com.ccloud.main;
+package com.ccloud.main.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

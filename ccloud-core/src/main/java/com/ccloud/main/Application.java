@@ -14,10 +14,10 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 @ServletComponentScan
 @MapperScan("com.ccloud.main.mapper")  //配置mapper扫描
-public class MainApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(MainApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }
