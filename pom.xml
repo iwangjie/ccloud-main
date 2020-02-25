@@ -6,6 +6,7 @@
     <modules>
         <module>ccloud-core</module>
         <module>ccloud-common</module>
+        <module>ccloud-generator</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -119,12 +120,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.3.1</version>
-        </dependency>
-
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
