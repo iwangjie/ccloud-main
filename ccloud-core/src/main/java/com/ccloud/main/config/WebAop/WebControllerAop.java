@@ -13,9 +13,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Web切面统一处理日志
+ * Web切面统一处理操作日志
  *
- * @author yanghang
+ * @author yanghang,suhui
  */
 
 @Aspect
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class WebControllerAop  {
 
-    private final static Logger logger = LoggerFactory.getLogger(WebControllerAop.class);
+    //private final static Logger logger = LoggerFactory.getLogger(WebControllerAop.class);
 
     @Pointcut("execution(public * com.ccloud.main.controller..*.*(..))")
     public void webLog(){}
@@ -37,10 +37,10 @@ public class WebControllerAop  {
         HttpServletRequest request = attributes.getRequest();
 
         // 记录下请求内容
-        logger.info("请求地址 : " + request.getRequestURL().toString());
-        logger.info("请求类型 : " + request.getMethod());
-        logger.info("IP : " + request.getRemoteAddr());
-        logger.info("所在包名 : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+       log.info("请求地址 : " + request.getRequestURL().toString());
+       log.info("请求类型 : " + request.getMethod());
+       log.info("IP : " + request.getRemoteAddr());
+       log.info("所在包名 : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
 
 
     }
