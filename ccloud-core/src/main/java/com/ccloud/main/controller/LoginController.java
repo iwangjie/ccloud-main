@@ -12,12 +12,13 @@ import com.ccloud.main.util.annotation.RequestJson;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -34,7 +35,7 @@ import java.io.ByteArrayOutputStream;
  */
 @RestController
 @Slf4j
-@Api(tags = {"登录管理"})
+@Api(tags = {"登录注册"})
 public class LoginController extends BaseController {
 
     @Resource
@@ -61,7 +62,11 @@ public class LoginController extends BaseController {
      * @param password
      * @return
      */
-    @PostMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    @ApiOperation(value = "登录", notes = "登录", produces = "application/json")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true)
+            , @ApiImplicitParam(name = "password", value = "密码", required = true)
+    })
     public Result login(@RequestJson("username") String username, @RequestJson("password") String password) {
 
         BusinessUser user = businessUserLogic.findByName(username);
@@ -86,6 +91,11 @@ public class LoginController extends BaseController {
      * @return
      */
     @PostMapping("/reg")
+    @ApiOperation("注册")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true)
+            , @ApiImplicitParam(name = "password", value = "密码", required = true)
+            , @ApiImplicitParam(name = "code", value = "验证码", required = true)
+    })
     public Result reg(HttpServletRequest request, @RequestJson("username") String username, @RequestJson("password") String password, @RequestJson("code") String code) {
 
         String VERIFY_CODE = (String) request.getSession().getAttribute(VERIFY_CODE_KEY);
@@ -104,6 +114,7 @@ public class LoginController extends BaseController {
 
 
     @GetMapping("/verifyCode")
+    @ApiOperation("获取验证码")
     public void verifyCode(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         byte[] captchaChallengeAsJpeg = null;
         ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
@@ -139,8 +150,8 @@ public class LoginController extends BaseController {
 
     @PostMapping("/currUser")
     @RequiresPermissions("user:currUser")
+    @ApiOperation("获取当前用户信息")
     public Result currUser() {
-        System.out.println();
         return ResultUtil.success(UserManager.getCurrentUser());
     }
 
