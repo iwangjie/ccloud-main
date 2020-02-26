@@ -1,29 +1,27 @@
 package com.ccloud.main.config.WebAop;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Modifier;
 
 /**
- * Web切面统一处理操作日志
+ * Web切面统一处理日志
  *
- * @author yanghang,suhui
+ * @author yanghang
  */
 
 @Aspect
 @Component
 @Slf4j
 public class WebControllerAop  {
-
-    //private final static Logger logger = LoggerFactory.getLogger(WebControllerAop.class);
 
     @Pointcut("execution(public * com.ccloud.main.controller..*.*(..))")
     public void webLog(){}
@@ -37,10 +35,15 @@ public class WebControllerAop  {
         HttpServletRequest request = attributes.getRequest();
 
         // 记录下请求内容
-       log.info("请求地址 : " + request.getRequestURL().toString());
-       log.info("请求类型 : " + request.getMethod());
-       log.info("IP : " + request.getRemoteAddr());
-       log.info("所在包名 : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        //目标方法名
+        log.info("目标方法名 : " + joinPoint.getSignature().getName());
+        log.info("请求地址 : " + request.getRequestURL().toString());
+        log.info("请求类型 : " + request.getMethod());
+        log.info("IP : " + request.getRemoteAddr());
+        log.info("所在包名 : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        log.info("目标方法声明类型:" + Modifier.toString(joinPoint.getSignature().getModifiers()));
+        //获取传入目标方法的参数
+        log.info("参数拼接 : " + StringUtils.join(joinPoint.getArgs(),","));
 
 
     }
