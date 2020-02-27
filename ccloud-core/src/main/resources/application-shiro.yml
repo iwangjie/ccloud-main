@@ -1,9 +1,12 @@
-fastdep:
+ccloud:
   shiro-jwt:
     filter: #shiro过滤规则
       admin:
         path: /**
-        role: jwt # jwt为需要进行token校验
+        role: pcJwt # jwt为需要进行token校验
+      api:
+        path: /api/**
+        role: clientJwt
       verifyCode:
         path: /verifyCode
         role: anon # anon为无需校验

@@ -1,4 +1,4 @@
-package com.ccloud.main.config;
+package com.ccloud.main.config.swagger;
 
 import com.ccloud.main.pojo.enumeration.ResultEnum;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,0 +1,12 @@
+ccloud-pc:
+  shiro-jwt:
+    secret: "6Dx8SIuaHXJYnpsK18SSpjPs50lZcT52" # jwt秘钥
+    expireTime: 7200000 # token有效期
+    prefix: "C-Cloud "  # token校验时的前缀
+    signPrefix: "C-Cloud " # token生成签名的前缀
+    header: "CC-Authorization" # token校验时的header头
+    #    以下对应为shiro配置参数，无特殊需求无需配置
+#    loginUrl: /login
+#    successUrl:
+#    unauthorizedUrl:
+#    filterChainDefinitions:

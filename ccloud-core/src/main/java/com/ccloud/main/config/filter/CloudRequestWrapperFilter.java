@@ -1,5 +1,6 @@
-package com.ccloud.main.config;
+package com.ccloud.main.config.filter;
 
+import com.ccloud.main.config.jwt.pc.PcJwtUtil;
 import com.ccloud.main.entity.BusinessAppBaseConfig;
 import com.ccloud.main.pojo.enumeration.CloudUtilEnum;
 import com.ccloud.main.pojo.enumeration.ResultEnum;
@@ -9,7 +10,6 @@ import com.ccloud.main.util.CloudUtil;
 import com.ccloud.main.util.ResultUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ public class CloudRequestWrapperFilter implements Filter {
     @Resource
     private IBusinessAppBaseConfigService iBusinessAppBaseConfigService;
 
-    private static JwtUtil jwtUtil = new JwtUtil();
+    private static PcJwtUtil pcJwtUtil = new PcJwtUtil();
 
 
     @Override
@@ -77,12 +77,12 @@ public class CloudRequestWrapperFilter implements Filter {
                 String client_token = ((HttpServletRequest) request).getHeader("CL-Authorization");
                 CloudUtil.set(CloudUtilEnum.CL_AUTHORIZATION, client_token);
                 //参数校验
-                
+
             } else {
                 log.info("PC端接口");
                 String pc_token = ((HttpServletRequest) request).getHeader("CC-Authorization");
                 CloudUtil.set(CloudUtilEnum.CC_AUTHORIZATION, pc_token);
-                String userId = jwtUtil.getUserId(pc_token);
+                String userId = pcJwtUtil.getUserId(pc_token);
                 BusinessAppBaseConfig businessAppBaseConfig = iBusinessAppBaseConfigService.getById(appId);
                 if (businessAppBaseConfig == null) {
                     responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
@@ -92,7 +92,7 @@ public class CloudRequestWrapperFilter implements Filter {
                     responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
                 }
             }
-
+            requestWrapper = cloudHttpServletRequestWrapper;
         }
         if (null == requestWrapper) {
             chain.doFilter(request, response);

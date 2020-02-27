@@ -1,5 +1,6 @@
 package com.ccloud.main.controller;
 
+import com.ccloud.main.config.jwt.pc.PcJwtUtil;
 import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.logic.BusinessUserLogic;
@@ -10,7 +11,6 @@ import com.ccloud.main.util.MD5Tools;
 import com.ccloud.main.util.ResultUtil;
 import com.ccloud.main.util.annotation.RequestJson;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -45,7 +45,7 @@ public class LoginController extends BaseController {
     private IBusinessUserService iBusinessUserService;
 
     @Resource
-    private JwtUtil jwtUtil;
+    private PcJwtUtil pcJwtUtil;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -79,7 +79,7 @@ public class LoginController extends BaseController {
             return ResultUtil.error(ResultEnum.USER_PASSWORD_ERROR);
         }
 
-        return ResultUtil.success(jwtUtil.sign(user.getId() + ":" + user.getPassword()));
+        return ResultUtil.success(pcJwtUtil.sign(user.getId() + ":" + user.getPassword()));
     }
 
     /**

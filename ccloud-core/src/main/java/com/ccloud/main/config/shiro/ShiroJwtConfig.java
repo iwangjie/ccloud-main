@@ -6,8 +6,8 @@ import com.ccloud.main.entity.BusinessRole;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.logic.BusinessResourceLogic;
 import com.ccloud.main.logic.BusinessRoleLogic;
+import com.ccloud.main.service.IBusinessUserService;
 import com.ccloud.main.util.exception.HandleTokenException;
-import com.louislivi.fastdep.shirojwt.shiro.FastDepShiroJwtAuthorization;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.springframework.stereotype.Component;
@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class ShiroJwtConfig extends FastDepShiroJwtAuthorization {
+public class ShiroJwtConfig extends ShiroJwtAuthorization {
 
 
     @Resource
-    private com.ccloud.main.service.IBusinessUserService IBusinessUserService;
+    private IBusinessUserService IBusinessUserService;
 
     @Resource
     private BusinessRoleLogic businessRoleLogic;

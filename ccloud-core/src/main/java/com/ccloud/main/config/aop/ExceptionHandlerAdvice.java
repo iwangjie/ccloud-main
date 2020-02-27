@@ -1,4 +1,4 @@
-package com.ccloud.main.config;
+package com.ccloud.main.config.aop;
 
 import com.ccloud.main.controller.BaseController;
 import com.ccloud.main.pojo.enumeration.ResultEnum;

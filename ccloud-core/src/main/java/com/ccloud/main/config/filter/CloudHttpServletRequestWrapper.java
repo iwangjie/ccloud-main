@@ -1,4 +1,4 @@
-package com.ccloud.main.config;
+package com.ccloud.main.config.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

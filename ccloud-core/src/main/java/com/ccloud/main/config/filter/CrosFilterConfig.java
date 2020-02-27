@@ -1,4 +1,4 @@
-package com.ccloud.main.config;
+package com.ccloud.main.config.filter;
 
 import lombok.extern.slf4j.Slf4j;
 
