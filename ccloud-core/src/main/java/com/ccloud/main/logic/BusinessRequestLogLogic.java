@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 
 @Service
@@ -47,24 +45,24 @@ public class BusinessRequestLogLogic {
         String[] parameterNames = methodSignature.getParameterNames();
         List<String> parameterNamesList = Arrays.asList(parameterNames);
 
-        String join = StringUtils.EMPTY;
+        String parameterNamesJoin = StringUtils.EMPTY;
         if(parameterNames.length==parameterNamesList.size()){
             List<String> addList = new ArrayList<>();
             for (int i = 0;i<parameterNamesList.size();i++){
                 addList.add(parameterNamesList.get(i)+":"+Arrays.asList(joinPoint.getArgs()).get(i));
             }
-            join = StringUtils.join(addList, ",");
-            log.info("参数拼接 : " +join);
+            parameterNamesJoin = StringUtils.join(addList, ",");
+            log.info("参数拼接 : " +parameterNamesJoin);
         }else{
-            join = StringUtils.join(joinPoint.getArgs(), ",");
-            log.info("参数拼接 : " +join);
+            parameterNamesJoin = StringUtils.join(joinPoint.getArgs(), ",");
+            log.info("参数拼接 : " +parameterNamesJoin);
         }
 
         businessRequestLog.setMethodName(StringUtils.isNotEmpty(joinPoint.getSignature().getName())?joinPoint.getSignature().getName():StringUtils.EMPTY);
         businessRequestLog.setRequestUrl(StringUtils.isNotEmpty(request.getRequestURL())?request.getRequestURL().toString():StringUtils.EMPTY);
         businessRequestLog.setRequestWay(StringUtils.isNotEmpty(request.getMethod())?request.getMethod():StringUtils.EMPTY);
         businessRequestLog.setPackageName(StringUtils.isNotEmpty(joinPoint.getSignature().getDeclaringTypeName())?joinPoint.getSignature().getDeclaringTypeName():StringUtils.EMPTY);
-        businessRequestLog.setParameterSplit(join);
+        businessRequestLog.setParameterSplit(parameterNamesJoin);
         businessRequestLog.setAppId(1);
         businessRequestLog.setUserId(5);
         businessRequestLog.setStatus("normal");
