@@ -16,6 +16,18 @@ public enum CloudUtilEnum {
      */
     IS_CLIENT(),
 
+
+    /**
+     * 当前请求的 requestBody
+     */
+    CURR_REQUEST_BODY(),
+
+
+    /**
+     * 当前请求的 userId
+     */
+    CURR_USER_ID(),
+
     /**
      * PC端 Token
      */
@@ -25,5 +37,4 @@ public enum CloudUtilEnum {
      * 客户端 Token
      */
     CL_AUTHORIZATION();
-
 }

@@ -36,6 +36,8 @@ public class CloudRequestWrapperFilter implements Filter {
     @Resource
     private IBusinessAppBaseConfigService iBusinessAppBaseConfigService;
 
+    private static JwtUtil jwtUtil = new JwtUtil();
+
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -57,35 +59,40 @@ public class CloudRequestWrapperFilter implements Filter {
                 return;
             }
 
-            // Token存储
-            String cl_token = ((HttpServletRequest) request).getHeader("CL-Authorization");
-            CloudUtil.set(CloudUtilEnum.CL_AUTHORIZATION, cl_token);
-            String cc_token = ((HttpServletRequest) request).getHeader("CC-Authorization");
-            CloudUtil.set(CloudUtilEnum.CC_AUTHORIZATION, cc_token);
 
             /***APP_ID 权限验证**/
             JsonNode requestBody = cloudHttpServletRequestWrapper.getRequestBody();
+            CloudUtil.set(CloudUtilEnum.CURR_REQUEST_BODY, requestBody);
             JsonNode appIdNode = requestBody.get("appId");
             if (appIdNode == null || StringUtils.isBlank(appIdNode.asText())) {
                 chain.doFilter(cloudHttpServletRequestWrapper, response);
                 return;
             }
             String appId = appIdNode.asText();
-            // 判断权限
-            BusinessAppBaseConfig businessAppBaseConfig = iBusinessAppBaseConfigService.getById(appId);
-            if (businessAppBaseConfig == null) {
-                responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
-                return;
-            }
-            String token = ((HttpServletRequest) request).getHeader("CC-Authorization");
-            JwtUtil jwtUtil = new JwtUtil();
-            String userId = jwtUtil.getUserId(token);
-            if (businessAppBaseConfig.getBusinessUserId().equals(userId)) {
-                responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
-            }
-            /***APPID 权限验证**/
 
-            requestWrapper = cloudHttpServletRequestWrapper;
+            // 判断是移动端接口还是PC端接口
+            StringBuffer requestURL = ((HttpServletRequest) request).getRequestURL();
+            if (requestURL.indexOf("/api/") != -1) {
+                log.info("移动端接口");
+                String client_token = ((HttpServletRequest) request).getHeader("CL-Authorization");
+                CloudUtil.set(CloudUtilEnum.CL_AUTHORIZATION, client_token);
+                //参数校验
+                
+            } else {
+                log.info("PC端接口");
+                String pc_token = ((HttpServletRequest) request).getHeader("CC-Authorization");
+                CloudUtil.set(CloudUtilEnum.CC_AUTHORIZATION, pc_token);
+                String userId = jwtUtil.getUserId(pc_token);
+                BusinessAppBaseConfig businessAppBaseConfig = iBusinessAppBaseConfigService.getById(appId);
+                if (businessAppBaseConfig == null) {
+                    responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
+                    return;
+                }
+                if (businessAppBaseConfig.getBusinessUserId().equals(userId)) {
+                    responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
+                }
+            }
+
         }
         if (null == requestWrapper) {
             chain.doFilter(request, response);
