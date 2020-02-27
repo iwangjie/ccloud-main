@@ -7,6 +7,8 @@ ccloud:
       api:
         path: /api/**
         role: clientJwt
+
+        # PC放行
       verifyCode:
         path: /verifyCode
         role: anon # anon为无需校验
@@ -30,6 +32,11 @@ ccloud:
         role: anon
       swagger-doc:
         path: /doc.html
+        role: anon
+
+        # 移动端放行
+      c_login:
+        path: /api/login
         role: anon
     secret: "6Dx8SIuaHXJYnpsK18SSpjPs50lZcT52" # jwt秘钥
     #    expireTime: 7200000 # token有效期

@@ -39,10 +39,16 @@ public class ClientJwtFilter extends BasicHttpAuthenticationFilter {
         authorization = authorization.replaceAll("(?i)" + clientJwtUtil.shiroJwtClientProperties.getPrefix(), "");
         JwtToken token = new JwtToken(authorization);
         //verify token
-        String userId = clientJwtUtil.getUserId(authorization);
-        if (userId == null) {
+        String tokenValue = clientJwtUtil.getUserId(authorization);
+        if (tokenValue == null) {
             return false;
         }
+//        try {
+//            JsonNode jsonNode = clientJwtUtil.objectMapper.readTree(tokenValue);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
         getSubject(request, response).login(token);
         return true;
     }

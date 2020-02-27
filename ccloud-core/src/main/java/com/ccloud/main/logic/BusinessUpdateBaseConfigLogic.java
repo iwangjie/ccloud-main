@@ -64,7 +64,7 @@ public class BusinessUpdateBaseConfigLogic {
                         .eq(BusinessUpdateBaseConfig::getStatus, 0)
                         .gt(BusinessUpdateBaseConfig::getVersionId, versionId)
                         .orderByDesc(BusinessUpdateBaseConfig::getVersionId)
-                        .last("limit 0,1"));
+                        .last(" limit 0,1"));
         return businessUpdateBaseConfig;
     }
 

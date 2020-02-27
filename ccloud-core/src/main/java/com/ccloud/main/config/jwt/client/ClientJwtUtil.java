@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ccloud.main.config.shiro.ShiroJwtAuthorization;
 import com.ccloud.main.config.shiro.client.ShiroJwtClientProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
@@ -22,6 +23,9 @@ import static org.apache.shiro.SecurityUtils.getSubject;
  */
 @Configuration
 public class ClientJwtUtil {
+
+    @Resource
+    public ObjectMapper objectMapper;
     @Resource
     public ShiroJwtClientProperties shiroJwtClientProperties;
     @Resource
