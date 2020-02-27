@@ -8,6 +8,7 @@ import com.ccloud.main.logic.BusinessNoticeBaseConfigLogic;
 import com.ccloud.main.pojo.query.NoticePageQueryVo;
 import com.ccloud.main.pojo.system.Result;
 import com.ccloud.main.service.IBusinessNoticeBaseConfigService;
+import com.ccloud.main.util.CloudUtil;
 import com.ccloud.main.util.ResultUtil;
 import com.ccloud.main.util.annotation.RequestJson;
 import io.swagger.annotations.Api;
@@ -59,6 +60,7 @@ public class BusinessNoticeController extends BaseController {
      */
     @PostMapping("/id")
     public Result<Object> getNotIceById(@RequestJson("appId") Integer appId, @RequestJson("noticeId") Integer noticeId) {
+        log.info("isClient:==========" + CloudUtil.isClient());
         BusinessUser currentUser = UserManager.getCurrentUser();
         BusinessNoticeBaseConfig businessNoticeBaseConfig = businessNoticeBaseConfigLogic.getLastNoticeById(currentUser, appId, noticeId);
         return ResultUtil.success(businessNoticeBaseConfig);
