@@ -72,7 +72,7 @@ public class BusinessRequestLog extends BaseEntity {
     private String status;
 
     /**
-     * 请求端类型 ios(iphone手机),Android(安卓手机),computer(电脑)
+     * 请求端类型 Ios(iphone手机),Android(安卓手机),Computer(电脑)
      */
     private String type;
 
