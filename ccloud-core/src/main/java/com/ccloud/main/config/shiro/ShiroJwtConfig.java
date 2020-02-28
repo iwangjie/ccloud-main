@@ -8,9 +8,7 @@ import com.ccloud.main.logic.BusinessResourceLogic;
 import com.ccloud.main.logic.BusinessRoleLogic;
 import com.ccloud.main.service.IBusinessUserService;
 import com.ccloud.main.util.exception.HandleTokenException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
@@ -21,8 +19,8 @@ import java.util.stream.Collectors;
 /**
  * @author wangjie
  */
-@Component
-@Slf4j
+//@Configuration
+//@Slf4j
 public class ShiroJwtConfig extends ShiroJwtAuthorization {
 
 

@@ -10,6 +10,8 @@ import com.ccloud.main.service.IBusinessUserService;
 import com.ccloud.main.util.MD5Tools;
 import com.ccloud.main.util.ResultUtil;
 import com.ccloud.main.util.annotation.RequestJson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -51,6 +53,9 @@ public class LoginController extends BaseController {
     private RedisTemplate redisTemplate;
 
     @Resource
+    private ObjectMapper objectMapper;
+
+    @Resource
     private DefaultKaptcha captchaProducer;
 
     private static final String VERIFY_CODE_KEY = "VERIFY_CODE";
@@ -67,7 +72,7 @@ public class LoginController extends BaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true)
             , @ApiImplicitParam(name = "password", value = "密码", required = true)
     })
-    public Result login(@RequestJson("username") String username, @RequestJson("password") String password) {
+    public Result login(@RequestJson("username") String username, @RequestJson("password") String password) throws JsonProcessingException {
 
         BusinessUser user = businessUserLogic.findByName(username);
         if (user == null) {
@@ -78,8 +83,7 @@ public class LoginController extends BaseController {
         if (!password_salt.equals(user.getPassword())) {
             return ResultUtil.error(ResultEnum.USER_PASSWORD_ERROR);
         }
-
-        return ResultUtil.success(pcJwtUtil.sign(user.getId() + ":" + user.getPassword()));
+        return ResultUtil.success(pcJwtUtil.sign(objectMapper.writeValueAsString(user)));
     }
 
     /**

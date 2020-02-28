@@ -1,6 +1,7 @@
 package com.ccloud.main.config.shiro;
 
 import com.ccloud.main.entity.BusinessUser;
+import com.ccloud.main.entity.ClientUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -12,6 +13,19 @@ import org.apache.shiro.subject.Subject;
  */
 public class UserManager {
     public static final String CURRENT_USER = "CURRENT_USER";
+    public static final String CLIENT_CURRENT_USER = "CLIENT_CURRENT_USER";
+
+    public static BusinessUser getClientCurrentUser() {
+        Object object = getAttribute(CLIENT_CURRENT_USER);
+        if (object != null && object instanceof ClientUser) {
+            return (BusinessUser) object;
+        }
+        return null;
+    }
+
+    public static void setClientCurrentUser(ClientUser user) {
+        setAttribute(CLIENT_CURRENT_USER, user);
+    }
 
     public static BusinessUser getCurrentUser() {
         Object object = getAttribute(CURRENT_USER);
