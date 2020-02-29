@@ -1,6 +1,5 @@
 package com.ccloud.main.config.aop;
 
-import com.ccloud.main.config.aop.SystemLogQueue;
 import com.ccloud.main.entity.BusinessRequestLog;
 import com.ccloud.main.pojo.enumeration.CloudUtilEnum;
 import com.ccloud.main.util.CloudUtil;
@@ -41,12 +40,18 @@ public class WebLogAspect {
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) {
 
-
+        /*int appId = 0;
+        int useId = 0;*/
         JsonNode jsonNode = (JsonNode) CloudUtil.get(CloudUtilEnum.CURR_REQUEST_BODY);
-        JsonNode appId = jsonNode.get("appId");
-        JsonNode userId = jsonNode.get("userId");
+        JsonNode appIdJsonNode = jsonNode.get("appId");
+        JsonNode userIdJsonNode = jsonNode.get("userId");
         log.info("userId:{}", jsonNode.get("appId"));
-
+        /*if(null != appIdJsonNode){
+            appId = appIdJsonNode.intValue();
+        }
+        if(null != userIdJsonNode){
+            useId = userIdJsonNode.intValue();
+        }*/
 
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

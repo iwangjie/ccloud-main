@@ -1,12 +1,8 @@
 package com.ccloud.main.config.aop;
 
 
-import com.ccloud.main.config.aop.SystemLogQueue;
 import com.ccloud.main.entity.BusinessRequestLog;
 import com.ccloud.main.mapper.BusinessRequestLogMapper;
-import com.ccloud.main.pojo.enumeration.CloudUtilEnum;
-import com.ccloud.main.util.CloudUtil;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

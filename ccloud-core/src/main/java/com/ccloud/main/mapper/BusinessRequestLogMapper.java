@@ -4,6 +4,7 @@ import com.ccloud.main.entity.BusinessRequestLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Mapper
 @Component
+@Transactional
 public interface BusinessRequestLogMapper extends BaseMapper<BusinessRequestLog> {
 
     void processData(List<BusinessRequestLog> list);
