@@ -1,6 +1,5 @@
 package com.ccloud.main.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -32,13 +31,11 @@ public class BusinessUpdateBaseConfig extends BaseEntity {
     /**
      * 版本内部ID
      */
-    @TableField("versionId")
     private Integer versionId;
 
     /**
      * 版本编号
      */
-    @TableField("versionCode")
     private String versionCode;
 
     /**

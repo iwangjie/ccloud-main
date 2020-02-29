@@ -1,7 +1,7 @@
 package com.ccloud.main.mapper;
 
-import com.ccloud.main.entity.BusinessRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ccloud.main.entity.BusinessRole;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.List;
 public interface BusinessRoleMapper extends BaseMapper<BusinessRole> {
 
     /**
+     * 根据用户 ID 查询 B 端用户所有角色
      *
      * @param id
      * @return
