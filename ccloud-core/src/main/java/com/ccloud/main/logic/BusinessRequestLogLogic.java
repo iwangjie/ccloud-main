@@ -1,14 +1,11 @@
 package com.ccloud.main.logic;
 
 import com.ccloud.main.entity.BusinessRequestLog;
-import com.ccloud.main.mapper.BusinessRequestLogIntenet;
-import com.ccloud.main.mapper.BusinessRequestLogMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,9 +20,6 @@ import java.util.List;
 @Service
 @Transactional
 public class BusinessRequestLogLogic {
-
-    @Autowired
-    private BusinessRequestLogIntenet businessRequestLogIntenet;
 
     public void addBusinessRequestLog(JoinPoint joinPoint){
 
@@ -85,15 +79,7 @@ public class BusinessRequestLogLogic {
             //电脑
             businessRequestLog.setType("Computer");
         }
-        businessRequestLogIntenet.insert(businessRequestLog);
     }
-
-/*
-    public void processData(List<BusinessRequestLog> list) {
-        if (null != list && !list.isEmpty()) {
-            businessRequestLogIntenet.processData(list);
-        }
-    }*/
 
 
 }
