@@ -18,7 +18,6 @@ import java.util.List;
  */
 @Mapper
 @Component
-@Transactional
 public interface BusinessRequestLogMapper extends BaseMapper<BusinessRequestLog> {
 
     void processData(List<BusinessRequestLog> list);
