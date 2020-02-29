@@ -65,12 +65,21 @@ public class CloudRequestWrapperFilter implements Filter {
                 return;
             }
 
+            // RequestBody
+            JsonNode requestBody = cloudHttpServletRequestWrapper.getRequestBody();
+            CloudUtil.set(CloudUtilEnum.CURR_REQUEST_BODY, requestBody);
+
+
             // 多端标识和用户 ID
             StringBuffer requestURL = ((HttpServletRequest) request).getRequestURL();
             if (requestURL.indexOf("/api/") != -1) {
                 log.info("移动端接口");
                 CloudUtil.set(CloudUtilEnum.IS_CLIENT, true);
                 String client_token = ((HttpServletRequest) request).getHeader("CL-Authorization");
+                if (StringUtils.isBlank(client_token)) {
+                    chain.doFilter(cloudHttpServletRequestWrapper, response);
+                    return;
+                }
                 String authorization = client_token.replaceAll("(?i)" + clientJwtUtil.shiroJwtClientProperties.getPrefix(), "");
                 CloudUtil.set(CloudUtilEnum.CL_AUTHORIZATION, authorization);
                 String userId = clientJwtUtil.getUserId(authorization);
@@ -81,6 +90,10 @@ public class CloudRequestWrapperFilter implements Filter {
                 log.info("PC端接口");
                 CloudUtil.set(CloudUtilEnum.IS_CLIENT, false);
                 String pc_token = ((HttpServletRequest) request).getHeader("CC-Authorization");
+                if (StringUtils.isBlank(pc_token)) {
+                    chain.doFilter(cloudHttpServletRequestWrapper, response);
+                    return;
+                }
                 String authorization = pc_token.replaceAll("(?i)" + pcJwtUtil.shiroJwtPcProperties.getPrefix(), "");
                 CloudUtil.set(CloudUtilEnum.CC_AUTHORIZATION, authorization);
                 String userId = pcJwtUtil.getUserId(authorization);
@@ -90,8 +103,6 @@ public class CloudRequestWrapperFilter implements Filter {
 
 
             /***APP_ID 权限验证**/
-            JsonNode requestBody = cloudHttpServletRequestWrapper.getRequestBody();
-            CloudUtil.set(CloudUtilEnum.CURR_REQUEST_BODY, requestBody);
             JsonNode appIdNode = requestBody.get("appId");
             if (appIdNode == null || StringUtils.isBlank(appIdNode.asText())) {
                 chain.doFilter(cloudHttpServletRequestWrapper, response);
