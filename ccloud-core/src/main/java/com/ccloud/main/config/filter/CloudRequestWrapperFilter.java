@@ -37,8 +37,12 @@ public class CloudRequestWrapperFilter implements Filter {
     @Resource
     private IBusinessAppBaseConfigService iBusinessAppBaseConfigService;
 
-    private static PcJwtUtil pcJwtUtil = new PcJwtUtil();
-    private static ClientJwtUtil clientJwtUtil = new ClientJwtUtil();
+
+    @Resource
+    private PcJwtUtil pcJwtUtil;
+
+    @Resource
+    private ClientJwtUtil clientJwtUtil;
 
 
     @Override
@@ -61,6 +65,29 @@ public class CloudRequestWrapperFilter implements Filter {
                 return;
             }
 
+            // 多端标识和用户 ID
+            StringBuffer requestURL = ((HttpServletRequest) request).getRequestURL();
+            if (requestURL.indexOf("/api/") != -1) {
+                log.info("移动端接口");
+                CloudUtil.set(CloudUtilEnum.IS_CLIENT, true);
+                String client_token = ((HttpServletRequest) request).getHeader("CL-Authorization");
+                String authorization = client_token.replaceAll("(?i)" + clientJwtUtil.shiroJwtClientProperties.getPrefix(), "");
+                CloudUtil.set(CloudUtilEnum.CL_AUTHORIZATION, authorization);
+                String userId = clientJwtUtil.getUserId(authorization);
+                int id = objectMapper.readTree(userId).get("id").asInt();
+                CloudUtil.set(CloudUtilEnum.CURR_USER_ID, id);
+
+            } else {
+                log.info("PC端接口");
+                CloudUtil.set(CloudUtilEnum.IS_CLIENT, false);
+                String pc_token = ((HttpServletRequest) request).getHeader("CC-Authorization");
+                String authorization = pc_token.replaceAll("(?i)" + pcJwtUtil.shiroJwtPcProperties.getPrefix(), "");
+                CloudUtil.set(CloudUtilEnum.CC_AUTHORIZATION, authorization);
+                String userId = pcJwtUtil.getUserId(authorization);
+                int id = objectMapper.readTree(userId).get("id").asInt();
+                CloudUtil.set(CloudUtilEnum.CURR_USER_ID, id);
+            }
+
 
             /***APP_ID 权限验证**/
             JsonNode requestBody = cloudHttpServletRequestWrapper.getRequestBody();
@@ -70,28 +97,12 @@ public class CloudRequestWrapperFilter implements Filter {
                 chain.doFilter(cloudHttpServletRequestWrapper, response);
                 return;
             }
+            Integer userId = (Integer) CloudUtil.get(CloudUtilEnum.CURR_USER_ID);
             String appId = appIdNode.asText();
 
-            // 判断是移动端接口还是PC端接口
-            StringBuffer requestURL = ((HttpServletRequest) request).getRequestURL();
-            if (requestURL.indexOf("/api/") != -1) {
-                log.info("移动端接口");
-                CloudUtil.set(CloudUtilEnum.IS_CLIENT, true);
-                String client_token = ((HttpServletRequest) request).getHeader("CL-Authorization");
-                CloudUtil.set(CloudUtilEnum.CL_AUTHORIZATION, client_token);
-                String userId = clientJwtUtil.getUserId(client_token);
-                int id = objectMapper.readTree(userId).get("id").asInt();
-                CloudUtil.set(CloudUtilEnum.CURR_USER_ID, id);
-                //参数校验
+            if (CloudUtil.isClient()) {
 
             } else {
-                log.info("PC端接口");
-                CloudUtil.set(CloudUtilEnum.IS_CLIENT, false);
-                String pc_token = ((HttpServletRequest) request).getHeader("CC-Authorization");
-                CloudUtil.set(CloudUtilEnum.CC_AUTHORIZATION, pc_token);
-                String userId = pcJwtUtil.getUserId(pc_token);
-                int id = objectMapper.readTree(userId).get("id").asInt();
-                CloudUtil.set(CloudUtilEnum.CURR_USER_ID, id);
                 BusinessAppBaseConfig businessAppBaseConfig = iBusinessAppBaseConfigService.getById(appId);
                 if (businessAppBaseConfig == null) {
                     responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));

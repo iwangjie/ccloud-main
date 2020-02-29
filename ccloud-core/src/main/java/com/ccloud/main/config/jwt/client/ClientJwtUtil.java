@@ -62,6 +62,7 @@ public class ClientJwtUtil {
             DecodedJWT jwt = JWT.decode(getSubject().getPrincipal().toString());
             return jwt.getSubject();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -77,6 +78,7 @@ public class ClientJwtUtil {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getSubject();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

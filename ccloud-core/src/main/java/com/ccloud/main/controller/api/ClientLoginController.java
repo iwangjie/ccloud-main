@@ -53,7 +53,7 @@ public class ClientLoginController {
         if (!password_salt.equals(user.getPassword())) {
             return ResultUtil.error(ResultEnum.USER_PASSWORD_ERROR);
         }
-        user.setPassword("");
+        user.setPassword("******");
         return ResultUtil.success(clientJwtUtil.sign(objectMapper.writeValueAsString(user)));
     }
 

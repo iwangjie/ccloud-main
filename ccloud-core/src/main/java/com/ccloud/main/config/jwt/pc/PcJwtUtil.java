@@ -43,6 +43,7 @@ public class PcJwtUtil {
                     .build();
             verifier.verify(token);
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -58,6 +59,7 @@ public class PcJwtUtil {
             DecodedJWT jwt = JWT.decode(getSubject().getPrincipal().toString());
             return jwt.getSubject();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -73,6 +75,7 @@ public class PcJwtUtil {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getSubject();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

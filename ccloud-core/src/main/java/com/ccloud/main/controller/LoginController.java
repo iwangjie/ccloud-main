@@ -83,6 +83,7 @@ public class LoginController extends BaseController {
         if (!password_salt.equals(user.getPassword())) {
             return ResultUtil.error(ResultEnum.USER_PASSWORD_ERROR);
         }
+        user.setPassword("******");
         return ResultUtil.success(pcJwtUtil.sign(objectMapper.writeValueAsString(user)));
     }
 

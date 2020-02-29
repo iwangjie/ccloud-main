@@ -45,7 +45,7 @@ public class CloudUtil {
      * @return
      */
     public static boolean isClient() {
-        return data.get(CloudUtilEnum.IS_CLIENT) == null ? false : true;
+        return (boolean) data.get(CloudUtilEnum.IS_CLIENT);
     }
 
 }
