@@ -1,5 +1,6 @@
 package com.ccloud.main.config.filter;
 
+import com.ccloud.main.config.jwt.client.ClientJwtUtil;
 import com.ccloud.main.config.jwt.pc.PcJwtUtil;
 import com.ccloud.main.entity.BusinessAppBaseConfig;
 import com.ccloud.main.pojo.enumeration.CloudUtilEnum;
@@ -37,6 +38,7 @@ public class CloudRequestWrapperFilter implements Filter {
     private IBusinessAppBaseConfigService iBusinessAppBaseConfigService;
 
     private static PcJwtUtil pcJwtUtil = new PcJwtUtil();
+    private static ClientJwtUtil clientJwtUtil = new ClientJwtUtil();
 
 
     @Override
@@ -74,15 +76,22 @@ public class CloudRequestWrapperFilter implements Filter {
             StringBuffer requestURL = ((HttpServletRequest) request).getRequestURL();
             if (requestURL.indexOf("/api/") != -1) {
                 log.info("移动端接口");
+                CloudUtil.set(CloudUtilEnum.IS_CLIENT, true);
                 String client_token = ((HttpServletRequest) request).getHeader("CL-Authorization");
                 CloudUtil.set(CloudUtilEnum.CL_AUTHORIZATION, client_token);
+                String userId = clientJwtUtil.getUserId(client_token);
+                int id = objectMapper.readTree(userId).get("id").asInt();
+                CloudUtil.set(CloudUtilEnum.CURR_USER_ID, id);
                 //参数校验
 
             } else {
                 log.info("PC端接口");
+                CloudUtil.set(CloudUtilEnum.IS_CLIENT, false);
                 String pc_token = ((HttpServletRequest) request).getHeader("CC-Authorization");
                 CloudUtil.set(CloudUtilEnum.CC_AUTHORIZATION, pc_token);
                 String userId = pcJwtUtil.getUserId(pc_token);
+                int id = objectMapper.readTree(userId).get("id").asInt();
+                CloudUtil.set(CloudUtilEnum.CURR_USER_ID, id);
                 BusinessAppBaseConfig businessAppBaseConfig = iBusinessAppBaseConfigService.getById(appId);
                 if (businessAppBaseConfig == null) {
                     responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
