@@ -36,3 +36,13 @@ mybatis-plus:
 
 swagger:
   enabled: true
+
+system:
+ log:
+   queue:
+     maxsize: 5000
+     default:
+       handle:
+         size: 2
+         time: 300000
+

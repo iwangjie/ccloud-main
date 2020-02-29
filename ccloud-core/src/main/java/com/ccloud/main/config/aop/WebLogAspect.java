@@ -1,40 +1,61 @@
-package com.ccloud.main.logic;
+package com.ccloud.main.config.aop;
 
+import com.ccloud.main.config.aop.SystemLogQueue;
 import com.ccloud.main.entity.BusinessRequestLog;
-import com.ccloud.main.mapper.BusinessRequestLogIntenet;
-import com.ccloud.main.mapper.BusinessRequestLogMapper;
+import com.ccloud.main.pojo.enumeration.CloudUtilEnum;
+import com.ccloud.main.util.CloudUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Web切面统一处理日志(Aop日志记录之BlockingQueue队列)
+ *
+ * @author yanghang
+ */
+
 @Slf4j
-@Service
-@Transactional
-public class BusinessRequestLogLogic {
+@Aspect
+@Component
+public class WebLogAspect {
 
-    @Autowired
-    private BusinessRequestLogIntenet businessRequestLogIntenet;
+    ThreadLocal<BusinessRequestLog> businessRequestLogThreadLocal = new ThreadLocal<>();
 
-    public void addBusinessRequestLog(JoinPoint joinPoint){
+    @Pointcut("execution(public * com.ccloud.main.controller..*.*(..))")
+    public void webLog(){}
+
+    @Before("webLog()")
+    public void doBefore(JoinPoint joinPoint) {
+
+
+        JsonNode jsonNode = (JsonNode) CloudUtil.get(CloudUtilEnum.CURR_REQUEST_BODY);
+        JsonNode appId = jsonNode.get("appId");
+        JsonNode userId = jsonNode.get("userId");
+        log.info("userId:{}", jsonNode.get("appId"));
+
 
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         //获取HttpServletRequest
         HttpServletRequest request = attributes.getRequest();
 
+        long beginTime = System.currentTimeMillis();
         BusinessRequestLog businessRequestLog = new BusinessRequestLog();
+        businessRequestLogThreadLocal.set(businessRequestLog);
 
         //记录下请求内容
         log.info("目标方法名 : " + joinPoint.getSignature().getName());
@@ -42,6 +63,7 @@ public class BusinessRequestLogLogic {
         log.info("请求方式 : " + request.getMethod());
         log.info("所在包名 : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         log.info("请求端类型 :" + request.getHeader("User-Agent"));
+
 
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
@@ -85,15 +107,63 @@ public class BusinessRequestLogLogic {
             //电脑
             businessRequestLog.setType("Computer");
         }
-        businessRequestLogIntenet.insert(businessRequestLog);
+
+        businessRequestLog.setSpendTime(new BigDecimal(String.valueOf(beginTime)));
+
     }
 
-/*
-    public void processData(List<BusinessRequestLog> list) {
-        if (null != list && !list.isEmpty()) {
-            businessRequestLogIntenet.processData(list);
+
+
+
+    /**
+     * 返回通知, 在方法返回结果之后执行
+     *
+     * @param ret
+     * @throws Throwable
+     */
+    @AfterReturning(returning = "ret", pointcut = "webLog()")
+    public void doAfterReturning(Object ret) throws Throwable {
+        // 处理完请求，返回内容
+        log.info("RESPONSE: {}", ret);
+        BusinessRequestLog businessRequestLog = businessRequestLogThreadLocal.get();
+        if(null != businessRequestLog){
+            this.saveBusinessRequestLog();
         }
-    }*/
+    }
 
 
+    /**
+     * 保存系统日志
+     */
+    private void saveBusinessRequestLog(){
+        BusinessRequestLog businessRequestLog = businessRequestLogThreadLocal.get();
+        long beginTime = Long.valueOf(businessRequestLog.getSpendTime().toString());
+        //执行时长(秒)
+        double spendTime = (System.currentTimeMillis() - beginTime) / 1000.0d;
+
+        businessRequestLog.setSpendTime(new BigDecimal(String.valueOf(spendTime)));
+        try {
+            // 将系统日志放入到队列中分批处理
+            SystemLogQueue.getInstance().push(businessRequestLog);
+        } catch (Exception e) {
+            log.error("添加队列失败,已超过队列最大长度：{}", e);
+        } finally {
+            businessRequestLogThreadLocal.remove();
+        }
+    }
+
+
+    /**
+     * 异常通知，当目标方法执行过程中出现异常时才会进行执行的代码
+     *
+     * @param joinPoint
+     * @param ex
+     */
+    @AfterThrowing(throwing = "ex", pointcut = "webLog()")
+    public void afterthrowinglogging(JoinPoint joinPoint, Exception ex) {
+        BusinessRequestLog systemLog = businessRequestLogThreadLocal.get();
+        if (null != systemLog) {
+            this.saveBusinessRequestLog();
+        }
+    }
 }

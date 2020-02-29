@@ -2,6 +2,8 @@ package com.ccloud.main.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import com.ccloud.main.entity.BaseEntity;
 import lombok.Data;
@@ -86,5 +88,7 @@ public class BusinessRequestLog extends BaseEntity {
      */
     private LocalDateTime updateTime;
 
+
+    private BigDecimal spendTime;
 
 }

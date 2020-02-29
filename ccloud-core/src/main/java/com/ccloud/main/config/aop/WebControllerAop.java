@@ -18,18 +18,16 @@ import org.springframework.stereotype.Component;
  *
  * @author yanghang
  */
-
-@Aspect
-@Component
 @Slf4j
-public class WebControllerAop {
+/*@Aspect
+@Component*/
+public class WebControllerAop  {
 
     @Autowired
     private BusinessRequestLogLogic businessRequestLogLogic;
 
     @Pointcut("execution(public * com.ccloud.main.controller..*.*(..))")
-    public void webLog() {
-    }
+    public void webLog(){}
 
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) {

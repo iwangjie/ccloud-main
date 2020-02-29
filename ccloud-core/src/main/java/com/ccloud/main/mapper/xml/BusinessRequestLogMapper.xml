@@ -24,4 +24,25 @@
         id, app_id, user_id, method_name, request_url, request_way, description, package_name, parameter_split, status, type, create_time, update_time
     </sql>
 
+    <insert id="processData" parameterType="java.util.List" useGeneratedKeys="true">
+        INSERT INTO business_request_log
+        (app_id,user_id,method_name,request_url,request_way,description,package_name,parameter_split,status,type,create_Time,update_Time)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.appId,jdbcType=INTEGER},
+             #{item.userId,jdbcType=INTEGER},
+             #{item.methodName,jdbcType=VARCHAR},
+             #{item.requestUrl,jdbcType=VARCHAR},
+             #{item.requestWay,jdbcType=VARCHAR},
+             #{item.description,jdbcType=VARCHAR},
+             #{item.packageName,jdbcType=VARCHAR},
+             #{item.parameterSplit,jdbcType=VARCHAR},
+             #{item.status,jdbcType=VARCHAR},
+             #{item.type,jdbcType=VARCHAR},
+             #{item.createTime,jdbcType=DATE},
+             #{item.updateTime,jdbcType=DATE})
+        </foreach>
+    </insert>
+
+
 </mapper>
