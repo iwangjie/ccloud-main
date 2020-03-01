@@ -4,21 +4,24 @@ package com.ccloud.main.config.aop;
 import com.ccloud.main.entity.BusinessRequestLog;
 import com.ccloud.main.mapper.BusinessRequestLogMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
+
+
+/**
+ * 系统日志队列监听(当队列达到一定数量和时间后处理队列数据)
+ * @author 杨航
+ */
 
 @Slf4j
 @Component
 public class SystemLogQueueListener implements Runnable {
 
-    // 用来存放从队列拿出的数据
+    //用来存放从队列拿出的数据
     private List<BusinessRequestLog> queueDataList;
 
-    // 回调接口
-    @Autowired
+    //回调接口
     private BusinessRequestLogMapper process;
 
     public SystemLogQueueListener(BusinessRequestLogMapper process) {

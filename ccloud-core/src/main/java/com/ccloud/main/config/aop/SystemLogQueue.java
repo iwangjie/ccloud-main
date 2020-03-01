@@ -5,9 +5,15 @@ import com.ccloud.main.entity.BusinessRequestLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+
+/**
+ * 系统日志处理队列
+ *
+ * Web切面统一处理日志(Aop日志记录之BlockingQueue队列)
+ * @author 杨航
+ */
 
 @Slf4j
 @Component
