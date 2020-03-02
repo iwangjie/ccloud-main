@@ -6,6 +6,7 @@ import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessActivationCode;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.logic.BusinessActivationCodeLogic;
+import com.ccloud.main.pojo.enumeration.ResultEnum;
 import com.ccloud.main.pojo.query.UpdatePageQueryVo;
 import com.ccloud.main.pojo.system.Result;
 import com.ccloud.main.service.IBusinessActivationCodeService;
@@ -16,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -67,29 +68,30 @@ public class BusinessActivationCodeController {
     }
 
     /**
-     * @author 杨航
      * @param count 生成注册码的个数
-     * @param days 注册码的天数
-     * 生成随机的32位大小写字母的组个字符串
+     * @param days  注册码的天数
+     *              生成随机的32位大小写字母的组个字符串
+     * @author 杨航
      */
-    @PostMapping("/insert")
-    public Result insert(@RequestJson("count") int count,@RequestJson("days") int days){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        for(int j = 0; j<count; j++){
-            Random random=new Random();
+    @PostMapping("/generate")
+    public Result insert(@RequestJson("appId") int appId, @RequestJson("count") int count, @RequestJson("days") int days) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        if (count > 1000) {
+            return ResultUtil.error(ResultEnum.PARAMETER_ERROR);
+        }
+        for (int j = 0; j < count; j++) {
+            Random random = new Random();
             StringBuffer activationCode = new StringBuffer();
-            for(int i=0;i<32;i++){
-                int number=random.nextInt(51);
+            for (int i = 0; i < 32; i++) {
+                int number = random.nextInt(51);
                 activationCode.append(str.charAt(number));
             }
-            BusinessActivationCode businessActivationCode =  new BusinessActivationCode();
+            BusinessActivationCode businessActivationCode = new BusinessActivationCode();
             businessActivationCode.setActivationCode(activationCode.toString());
-            businessActivationCode.setAppId(0);
+            businessActivationCode.setAppId(appId);
             businessActivationCode.setDays(days);
-            businessActivationCode.setCreateTime(LocalDateTime.now());
-            businessActivationCode.setExt(org.apache.commons.lang3.StringUtils.EMPTY);
+            businessActivationCode.setExt("{}");
             businessActivationCode.setStatus(0);
-            businessActivationCode.setUpdateTime(LocalDateTime.now());
             businessActivationCode.setWriteOffStatus(0);
             iBusinessActivationCodeService.save(businessActivationCode);
         }
