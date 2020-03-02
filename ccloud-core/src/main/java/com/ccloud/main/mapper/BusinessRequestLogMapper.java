@@ -20,5 +20,8 @@ import java.util.List;
 @Component
 public interface BusinessRequestLogMapper extends BaseMapper<BusinessRequestLog> {
 
+    /**
+     * 队列数据批量处理接口
+     */
     void processData(List<BusinessRequestLog> list);
 }

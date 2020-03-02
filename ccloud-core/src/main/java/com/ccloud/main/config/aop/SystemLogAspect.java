@@ -40,18 +40,19 @@ public class SystemLogAspect {
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) {
 
-        /*int appId = 0;
-        int useId = 0;*/
+        int appId = 0;
+        Integer userId = 0;
         JsonNode jsonNode = (JsonNode) CloudUtil.get(CloudUtilEnum.CURR_REQUEST_BODY);
         JsonNode appIdJsonNode = jsonNode.get("appId");
-        JsonNode userIdJsonNode = jsonNode.get("userId");
+        Object object = CloudUtil.get(CloudUtilEnum.CURR_USER_ID);
         log.info("userId:{}", jsonNode.get("appId"));
-        /*if(null != appIdJsonNode){
+        if(null != appIdJsonNode){
             appId = appIdJsonNode.intValue();
         }
-        if(null != userIdJsonNode){
-            useId = userIdJsonNode.intValue();
-        }*/
+        if (null != object){
+            userId = Integer.valueOf(object.toString());
+        }
+
 
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -93,8 +94,8 @@ public class SystemLogAspect {
         businessRequestLog.setRequestWay(StringUtils.isNotEmpty(request.getMethod())?request.getMethod():StringUtils.EMPTY);
         businessRequestLog.setPackageName(StringUtils.isNotEmpty(joinPoint.getSignature().getDeclaringTypeName())?joinPoint.getSignature().getDeclaringTypeName():StringUtils.EMPTY);
         businessRequestLog.setParameterSplit(parameterNamesJoin);
-        businessRequestLog.setAppId(1);
-        businessRequestLog.setUserId(5);
+        businessRequestLog.setAppId(appId);
+        businessRequestLog.setUserId(userId);
         businessRequestLog.setStatus("normal");
         businessRequestLog.setCreateTime(LocalDateTime.now());
         businessRequestLog.setUpdateTime(LocalDateTime.now());

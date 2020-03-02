@@ -16,9 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 登录控制器
@@ -36,7 +37,6 @@ public class BusinessActivationCodeController {
 
     @Resource
     private IBusinessActivationCodeService iBusinessActivationCodeService;
-
 
     /**
      * 获取 app 所有激活码记录-分页
@@ -66,5 +66,32 @@ public class BusinessActivationCodeController {
         return ResultUtil.success(noticeBaseConfigs);
     }
 
-
+    /**
+     * @author 杨航
+     * @param count 生成注册码的个数
+     * 生成随机的32位大小写字母的组个字符串
+     */
+    @PostMapping("/insert")
+    public Result insert(@RequestJson("count") int count){
+        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for(int j = 0; j<count; j++){
+            Random random=new Random();
+            StringBuffer activationCode = new StringBuffer();
+            for(int i=0;i<32;i++){
+                int number=random.nextInt(51);
+                activationCode.append(str.charAt(number));
+            }
+            BusinessActivationCode businessActivationCode =  new BusinessActivationCode();
+            businessActivationCode.setActivationCode(activationCode.toString());
+            businessActivationCode.setAppId(0);
+            businessActivationCode.setDays(0);
+            businessActivationCode.setCreateTime(LocalDateTime.now());
+            businessActivationCode.setExt(org.apache.commons.lang3.StringUtils.EMPTY);
+            businessActivationCode.setStatus(0);
+            businessActivationCode.setUpdateTime(LocalDateTime.now());
+            businessActivationCode.setWriteOffStatus(0);
+            iBusinessActivationCodeService.save(businessActivationCode);
+        }
+        return ResultUtil.success();
+    }
 }
