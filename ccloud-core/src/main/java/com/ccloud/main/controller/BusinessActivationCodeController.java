@@ -69,10 +69,11 @@ public class BusinessActivationCodeController {
     /**
      * @author 杨航
      * @param count 生成注册码的个数
+     * @param days 注册码的天数
      * 生成随机的32位大小写字母的组个字符串
      */
     @PostMapping("/insert")
-    public Result insert(@RequestJson("count") int count){
+    public Result insert(@RequestJson("count") int count,@RequestJson("days") int days){
         String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for(int j = 0; j<count; j++){
             Random random=new Random();
@@ -84,7 +85,7 @@ public class BusinessActivationCodeController {
             BusinessActivationCode businessActivationCode =  new BusinessActivationCode();
             businessActivationCode.setActivationCode(activationCode.toString());
             businessActivationCode.setAppId(0);
-            businessActivationCode.setDays(0);
+            businessActivationCode.setDays(days);
             businessActivationCode.setCreateTime(LocalDateTime.now());
             businessActivationCode.setExt(org.apache.commons.lang3.StringUtils.EMPTY);
             businessActivationCode.setStatus(0);
