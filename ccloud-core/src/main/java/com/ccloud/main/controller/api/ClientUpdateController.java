@@ -1,7 +1,9 @@
 package com.ccloud.main.controller.api;
 
 
+import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessUpdateBaseConfig;
+import com.ccloud.main.entity.ClientUser;
 import com.ccloud.main.logic.BusinessUpdateBaseConfigLogic;
 import com.ccloud.main.pojo.system.Result;
 import com.ccloud.main.service.IBusinessUpdateBaseConfigService;
@@ -42,6 +44,7 @@ public class ClientUpdateController {
      */
     @PostMapping("/version")
     public Result version(@RequestJson("appId") Integer appId, @RequestJson("versionId") String versionId) {
+        ClientUser clientCurrentUser = UserManager.getClientCurrentUser();
         BusinessUpdateBaseConfig businessUpdateBaseConfig = businessUpdateBaseConfigLogic.getUpdateByVersionId(appId, versionId);
         return ResultUtil.success(businessUpdateBaseConfig);
     }

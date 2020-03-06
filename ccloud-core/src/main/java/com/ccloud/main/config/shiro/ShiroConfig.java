@@ -11,8 +11,6 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.ShiroFilter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,13 +29,12 @@ public class ShiroConfig {
     /**
      * AuthorizingRealm
      *
-     * @param pcJwtUtil jwt util bean
+     * @param shiroJwtAuthorization
      * @return AuthorizingRealm
      */
     @Bean
-    @ConditionalOnMissingBean(AuthorizingRealm.class)
-    public AuthorizingRealm authorizingRealm(PcJwtUtil pcJwtUtil) {
-        return new UserRealm(pcJwtUtil);
+    public AuthorizingRealm authorizingRealm(ShiroJwtAuthorization shiroJwtAuthorization) {
+        return new UserRealm(shiroJwtAuthorization);
     }
 
     /**
@@ -47,7 +44,6 @@ public class ShiroConfig {
      * @return securityManager
      */
     @Bean("securityManager")
-    @ConditionalOnMissingBean(SecurityManager.class)
     public DefaultWebSecurityManager getManager(AuthorizingRealm authorizingRealm) {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
         manager.setRealm(authorizingRealm);
@@ -67,7 +63,6 @@ public class ShiroConfig {
      * @return shiroFilter
      */
     @Bean("shiroFilter")
-    @ConditionalOnMissingBean(ShiroFilter.class)
     public ShiroFilterFactoryBean factory(DefaultWebSecurityManager securityManager, ShiroJwtCommonProperties shiroJwtCommonProperties, PcJwtUtil pcJwtUtil, ClientJwtUtil clientJwtUtil) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         // define your filter and name it as jwt
@@ -103,7 +98,6 @@ public class ShiroConfig {
      * @return LifecycleBeanPostProcessor
      */
     @Bean
-    @ConditionalOnMissingBean(LifecycleBeanPostProcessor.class)
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
@@ -115,7 +109,6 @@ public class ShiroConfig {
      * @return AuthorizationAttributeSourceAdvisor
      */
     @Bean
-    @ConditionalOnMissingBean(AuthorizationAttributeSourceAdvisor.class)
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
         advisor.setSecurityManager(securityManager);

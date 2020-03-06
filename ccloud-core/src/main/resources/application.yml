@@ -20,8 +20,8 @@ spring:
   profiles:
     include: db,shiro,shiro-pc,shiro-client
   jackson:
-    # 常用请求与响应自动转下划线，空值字段不传输
-    property-naming-strategy: SNAKE_CASE
+#     常用请求与响应自动转下划线，空值字段不传输
+    #    property-naming-strategy: SNAKE_CASE  #此配置不可，打开后 RequestBody不正常，必须使用下划线传值
     default-property-inclusion: non_null
 
 #mybatis-plus
