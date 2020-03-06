@@ -1,5 +1,6 @@
 package com.ccloud.main.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessNoticeBaseConfig;
 import com.ccloud.main.entity.BusinessUser;
@@ -10,7 +11,6 @@ import com.ccloud.main.service.IBusinessNoticeBaseConfigService;
 import com.ccloud.main.util.CloudUtil;
 import com.ccloud.main.util.ResultUtil;
 import com.ccloud.main.util.annotation.RequestJson;
-import com.github.pagehelper.Page;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,7 +75,7 @@ public class BusinessNoticeController extends BaseController {
     @PostMapping("/page")
     public Result<Object> page(@RequestBody NoticePageQueryVo noticePageQueryVo) {
         BusinessUser currentUser = UserManager.getCurrentUser();
-        Page<BusinessNoticeBaseConfig> noticeBaseConfigs = businessNoticeBaseConfigLogic.getPageNoticeByAppId(noticePageQueryVo, currentUser);
+        IPage<BusinessNoticeBaseConfig> noticeBaseConfigs = businessNoticeBaseConfigLogic.getPageNoticeByAppId(noticePageQueryVo, currentUser);
         return ResultUtil.success(noticeBaseConfigs);
     }
 

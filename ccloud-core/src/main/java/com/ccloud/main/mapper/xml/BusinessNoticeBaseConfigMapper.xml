@@ -35,13 +35,9 @@
     </select>
 
     <select id="getAllNoticeByAppId" resultType="com.ccloud.main.entity.BusinessNoticeBaseConfig">
-        select * from
-        business_app_base_config babc,business_notice_base_config bu
-        where babc.id = bu.app_id
-        and babc.business_user_id = #{userId}
-        and bu.notice_release_start_time &lt;= NOW()
-        and bu.notice_release_end_time &gt;= NOW()
-        and babc.status = 0
+        select bu.* from
+        business_notice_base_config bu
+        where bu.app_id = #{appId}
 
     </select>
 </mapper>

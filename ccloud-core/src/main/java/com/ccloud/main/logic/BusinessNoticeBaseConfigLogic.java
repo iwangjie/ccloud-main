@@ -1,11 +1,11 @@
 package com.ccloud.main.logic;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ccloud.main.entity.BusinessNoticeBaseConfig;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.mapper.BusinessNoticeBaseConfigMapper;
 import com.ccloud.main.pojo.query.NoticePageQueryVo;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,13 +31,14 @@ public class BusinessNoticeBaseConfigLogic {
     }
 
     public List<BusinessNoticeBaseConfig> getAllNoticeByAppId(BusinessUser currentUser, Integer appId) {
-        return businessNoticeBaseConfigMapper.getAllNoticeByAppId(currentUser.getId(), appId);
+//        return businessNoticeBaseConfigMapper.getAllNoticeByAppId(null, currentUser.getId(), appId);
+        return null;
     }
 
-    public Page<BusinessNoticeBaseConfig> getPageNoticeByAppId(NoticePageQueryVo noticePageQueryVo, BusinessUser currentUser) {
-        Page<BusinessNoticeBaseConfig> configPage = PageHelper.startPage(noticePageQueryVo.getPageNum(), noticePageQueryVo.getPageSize())
-                .doSelectPage(() -> businessNoticeBaseConfigMapper.getAllNoticeByAppId(currentUser.getId(), noticePageQueryVo.getAppId()));
-        return configPage;
+    public IPage<BusinessNoticeBaseConfig> getPageNoticeByAppId(NoticePageQueryVo noticePageQueryVo, BusinessUser currentUser) {
+        Page<BusinessNoticeBaseConfig> page = new Page<>(noticePageQueryVo.getPageNum(), noticePageQueryVo.getPageSize());
+        IPage<BusinessNoticeBaseConfig> pageData = businessNoticeBaseConfigMapper.getAllNoticeByAppId(page, currentUser.getId(), noticePageQueryVo.getAppId());
+        return pageData;
     }
 
     public BusinessNoticeBaseConfig getLastNoticeById(BusinessUser currentUser, Integer appId, Integer noticeId) {

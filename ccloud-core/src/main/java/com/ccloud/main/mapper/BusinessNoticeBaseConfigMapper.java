@@ -1,14 +1,14 @@
 package com.ccloud.main.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ccloud.main.entity.BusinessNoticeBaseConfig;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author Generator
@@ -18,6 +18,6 @@ public interface BusinessNoticeBaseConfigMapper extends BaseMapper<BusinessNotic
 
     BusinessNoticeBaseConfig getLastNoticeByAppId(@Param("userId") Integer userId, @Param("appId") Integer appId);
 
-    List<BusinessNoticeBaseConfig> getAllNoticeByAppId(@Param("userId") Integer userId, @Param("appId") Integer appId);
+    IPage<BusinessNoticeBaseConfig> getAllNoticeByAppId(Page<BusinessNoticeBaseConfig> page, @Param("userId") Integer userId, @Param("appId") Integer appId);
 
 }
