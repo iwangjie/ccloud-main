@@ -1,8 +1,7 @@
 package com.ccloud.main.mapper;
 
-import com.ccloud.main.entity.BusinessNoticeBaseConfig;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.swagger.models.auth.In;
+import com.ccloud.main.entity.BusinessNoticeBaseConfig;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

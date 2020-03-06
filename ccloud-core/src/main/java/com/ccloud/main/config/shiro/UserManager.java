@@ -15,10 +15,10 @@ public class UserManager {
     public static final String CURRENT_USER = "CURRENT_USER";
     public static final String CLIENT_CURRENT_USER = "CLIENT_CURRENT_USER";
 
-    public static BusinessUser getClientCurrentUser() {
+    public static ClientUser getClientCurrentUser() {
         Object object = getAttribute(CLIENT_CURRENT_USER);
         if (object != null && object instanceof ClientUser) {
-            return (BusinessUser) object;
+            return (ClientUser) object;
         }
         return null;
     }

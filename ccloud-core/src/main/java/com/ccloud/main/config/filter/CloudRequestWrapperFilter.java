@@ -119,7 +119,7 @@ public class CloudRequestWrapperFilter implements Filter {
                     responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
                     return;
                 }
-                if (businessAppBaseConfig.getBusinessUserId().equals(userId)) {
+                if (!businessAppBaseConfig.getBusinessUserId().equals(userId)) {
                     responseResult((HttpServletResponse) response, ResultUtil.error(ResultEnum.PERMISSION_NOT_EXIST));
                 }
             }

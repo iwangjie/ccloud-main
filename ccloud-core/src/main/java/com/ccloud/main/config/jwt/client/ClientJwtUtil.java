@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ccloud.main.config.jwt.JwtUtil;
 import com.ccloud.main.config.shiro.ShiroJwtAuthorization;
 import com.ccloud.main.config.shiro.client.ShiroJwtClientProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +23,7 @@ import static org.apache.shiro.SecurityUtils.getSubject;
  * @author : wangjie
  */
 @Configuration
-public class ClientJwtUtil {
+public class ClientJwtUtil implements JwtUtil {
 
     @Resource
     public ObjectMapper objectMapper;
@@ -37,6 +38,7 @@ public class ClientJwtUtil {
      * @param token token
      * @return true or false
      */
+    @Override
     public boolean verify(String token, String userId) {
         try {
             String secret = shiroJwtAuthorization.getSecret(userId) == null ? shiroJwtClientProperties.getSecret() : null;
@@ -73,6 +75,7 @@ public class ClientJwtUtil {
      * @param token jwt token
      * @return user id
      */
+    @Override
     public String getUserId(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);

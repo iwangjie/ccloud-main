@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ccloud.main.entity.BusinessResource;
 import com.ccloud.main.entity.BusinessRole;
 import com.ccloud.main.entity.BusinessUser;
-import com.ccloud.main.entity.ClientUser;
 import com.ccloud.main.logic.BusinessResourceLogic;
 import com.ccloud.main.logic.BusinessRoleLogic;
 import com.ccloud.main.service.IBusinessUserService;
@@ -40,10 +39,10 @@ import java.util.stream.Collectors;
 public class ShiroJwtAuthorization implements ShiroJwtAuthorizationImp {
 
     @Resource
-    private IBusinessUserService iBusinessUserService;
+    public IBusinessUserService iBusinessUserService;
 
     @Resource
-    private IClientUserService iClientUserService;
+    public IClientUserService iClientUserService;
 
 
     @Resource
@@ -53,7 +52,7 @@ public class ShiroJwtAuthorization implements ShiroJwtAuthorizationImp {
     private BusinessResourceLogic businessResourceLogic;
 
     @Resource
-    private ObjectMapper objectMapper;
+    public ObjectMapper objectMapper;
 
 
     /**
@@ -83,12 +82,12 @@ public class ShiroJwtAuthorization implements ShiroJwtAuthorizationImp {
 
                 if (CloudUtil.isClient()) {
                     //移动端
-                    ClientUser user = iClientUserService.getOne(new LambdaQueryWrapper<ClientUser>().eq(ClientUser::getId, id).eq(ClientUser::getStatus, 0));
-                    UserManager.setClientCurrentUser(user);
-                } else if (!CloudUtil.isClient()) {
+//                    ClientUser user = iClientUserService.getOne(new LambdaQueryWrapper<ClientUser>().eq(ClientUser::getId, id).eq(ClientUser::getStatus, 0));
+//                    UserManager.setClientCurrentUser(user);
+                } else {
                     //PC端
                     BusinessUser user = iBusinessUserService.getOne(new LambdaQueryWrapper<BusinessUser>().eq(BusinessUser::getId, id).eq(BusinessUser::getStatus, 0));
-                    UserManager.setCurrentUser(user);
+//                    UserManager.setCurrentUser(user);
                     //用户的角色集合
                     List<BusinessRole> businessRoles = businessRoleLogic.selectByUserId(user.getId());
 
@@ -100,10 +99,6 @@ public class ShiroJwtAuthorization implements ShiroJwtAuthorizationImp {
                         permissions = businessResources.stream().map(businessResource -> businessResource.getResourceCode()).collect(Collectors.toSet());
                     }
                     simpleAuthorizationInfo.addStringPermissions(permissions);
-                    return simpleAuthorizationInfo;
-
-                } else {
-                    // 如果匹配错误，那么无任何权限
                     return simpleAuthorizationInfo;
                 }
 

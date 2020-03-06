@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ccloud.main.config.jwt.JwtUtil;
 import com.ccloud.main.config.shiro.ShiroJwtAuthorization;
 import com.ccloud.main.config.shiro.pc.ShiroJwtPcProperties;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,7 @@ import static org.apache.shiro.SecurityUtils.getSubject;
  * @author : wangjie
  */
 @Configuration
-public class PcJwtUtil {
+public class PcJwtUtil implements JwtUtil {
     @Resource
     public ShiroJwtPcProperties shiroJwtPcProperties;
     @Resource
@@ -33,6 +34,7 @@ public class PcJwtUtil {
      * @param token token
      * @return true or false
      */
+    @Override
     public boolean verify(String token, String userId) {
         try {
             String secret = shiroJwtAuthorization.getSecret(userId) == null ? shiroJwtPcProperties.getSecret() : null;
@@ -70,6 +72,7 @@ public class PcJwtUtil {
      * @param token jwt token
      * @return user id
      */
+    @Override
     public String getUserId(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
