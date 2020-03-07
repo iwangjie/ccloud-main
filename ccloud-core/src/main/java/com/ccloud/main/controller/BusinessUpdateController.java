@@ -1,7 +1,7 @@
 package com.ccloud.main.controller;
 
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessUpdateBaseConfig;
 import com.ccloud.main.entity.BusinessUser;
@@ -46,9 +46,8 @@ public class BusinessUpdateController {
      */
     @PostMapping("/page")
     public Result page(@RequestBody UpdatePageQueryVo updatePageQueryVo) {
-        Page<BusinessUpdateBaseConfig> page = new Page<>(updatePageQueryVo.getCurrent(), updatePageQueryVo.getSize());
         BusinessUser currentUser = UserManager.getCurrentUser();
-        Page<BusinessUpdateBaseConfig> data = businessUpdateBaseConfigLogic.getPageUpdateByAppId(page, currentUser, updatePageQueryVo.getAppId());
+        IPage<BusinessUpdateBaseConfig> data = businessUpdateBaseConfigLogic.getPageUpdateByAppId(currentUser, updatePageQueryVo);
         return ResultUtil.success(data);
     }
 

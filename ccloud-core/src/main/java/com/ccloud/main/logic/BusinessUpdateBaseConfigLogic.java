@@ -1,10 +1,12 @@
 package com.ccloud.main.logic;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ccloud.main.entity.BusinessUpdateBaseConfig;
 import com.ccloud.main.entity.BusinessUser;
 import com.ccloud.main.mapper.BusinessUpdateBaseConfigMapper;
+import com.ccloud.main.pojo.query.UpdatePageQueryVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,17 +27,16 @@ public class BusinessUpdateBaseConfigLogic {
     private BusinessUpdateBaseConfigMapper businessUpdateBaseConfigMapper;
 
     /**
-     * 分页查询
-     *
-     * @param page
      * @param currentUser
-     * @param appId
+     * @param updatePageQueryVo
      * @return
      */
-    public Page<BusinessUpdateBaseConfig> getPageUpdateByAppId(Page<BusinessUpdateBaseConfig> page, BusinessUser currentUser, Integer appId) {
+    public IPage<BusinessUpdateBaseConfig> getPageUpdateByAppId(BusinessUser currentUser, UpdatePageQueryVo updatePageQueryVo) {
         // 分页查询
+        Page<BusinessUpdateBaseConfig> page = new Page<>(updatePageQueryVo.getPageNum(), updatePageQueryVo.getPageSize());
+
         return businessUpdateBaseConfigMapper.selectPage(page, new LambdaQueryWrapper<BusinessUpdateBaseConfig>().
-                eq(BusinessUpdateBaseConfig::getAppId, appId).
+                eq(BusinessUpdateBaseConfig::getAppId, updatePageQueryVo.getAppId()).
                 eq(BusinessUpdateBaseConfig::getStatus, 0).
                 orderByDesc(BusinessUpdateBaseConfig::getCreateTime));
 

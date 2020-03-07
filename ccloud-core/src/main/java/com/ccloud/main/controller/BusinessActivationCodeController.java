@@ -1,7 +1,7 @@
 package com.ccloud.main.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ccloud.main.config.shiro.UserManager;
 import com.ccloud.main.entity.BusinessActivationCode;
 import com.ccloud.main.entity.BusinessUser;
@@ -21,13 +21,12 @@ import com.ccloud.main.util.annotation.RequestJson;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -40,6 +39,7 @@ import java.util.Random;
 @RestController
 @Slf4j
 @Api(tags = {"B端激活码管理"})
+@RequestMapping("/activationCode")
 public class BusinessActivationCodeController {
 
     @Resource
@@ -57,14 +57,13 @@ public class BusinessActivationCodeController {
     /**
      * 获取 app 所有激活码记录-分页
      *
-     * @param updatePageQueryVo
+     * @param activationCodePageQueryVo
      * @return
      */
     @PostMapping("/page")
-    public Result page(@RequestBody UpdatePageQueryVo updatePageQueryVo) {
-        Page<BusinessActivationCode> page = new Page<BusinessActivationCode>(updatePageQueryVo.getCurrent(), updatePageQueryVo.getSize());
+    public Result page(@RequestBody UpdatePageQueryVo activationCodePageQueryVo) {
         BusinessUser currentUser = UserManager.getCurrentUser();
-        Page<BusinessActivationCode> data = businessActivationCodeLogic.getPageUpdateByAppId(page, currentUser, updatePageQueryVo.getAppId());
+        IPage<BusinessActivationCode> data = businessActivationCodeLogic.getPageUpdateByAppId(currentUser, activationCodePageQueryVo);
         return ResultUtil.success(data);
     }
 
@@ -111,7 +110,7 @@ public class BusinessActivationCodeController {
                 businessActivationCode.setWriteOffStatus(0);
                 iBusinessActivationCodeService.save(businessActivationCode);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ResultUtil.success();
@@ -119,7 +118,7 @@ public class BusinessActivationCodeController {
 
 
     @PostMapping("/queryByActivationCode")
-    public Result queryByActivationCode(@RequestJson("appId") int appId,@RequestJson("activationCode") String activationCode) {
+    public Result queryByActivationCode(@RequestJson("appId") int appId, @RequestJson("activationCode") String activationCode) {
         try {
             if (appId > 0 && StringUtils.isNotEmpty(activationCode)) {
                 QueryWrapper<BusinessActivationCode> objectQueryWrapper = new QueryWrapper<>();
@@ -131,15 +130,15 @@ public class BusinessActivationCodeController {
                     businessActivationCode.setAppId(appId);
 
                     boolean b = iBusinessActivationCodeService.saveOrUpdate(businessActivationCode);
-                    if (!b){
+                    if (!b) {
                         return ResultUtil.error(ResultEnum.PARAMETER_ERROR);
                     }
 
                     Object object = CloudUtil.get(CloudUtilEnum.CURR_USER_ID);
-                    if (null == object){
+                    if (null == object) {
                         return ResultUtil.error(ResultEnum.PARAMETER_ERROR);
                     }
-                    Integer userId =Integer.valueOf(object.toString());
+                    Integer userId = Integer.valueOf(object.toString());
 
                     //日志
                     ClientBusinessActivationLog clientBusinessActivationLog = new ClientBusinessActivationLog();
@@ -150,15 +149,15 @@ public class BusinessActivationCodeController {
                     clientBusinessActivationLog.setUpdateTime(LocalDateTime.now());
                     clientBusinessActivationLog.setUserId(userId);
                     boolean save1 = iClientBusinessActivationLogService.save(clientBusinessActivationLog);
-                    if(!save1){
+                    if (!save1) {
                         return ResultUtil.error(ResultEnum.PARAMETER_ERROR);
                     }
 
                     //查询注册码是否已经被使用
                     QueryWrapper<ClientUserCode> clientUserCodeQueryWrapper = new QueryWrapper<>();
-                    clientUserCodeQueryWrapper.eq("activation_code_id",businessActivationCode.getId());
+                    clientUserCodeQueryWrapper.eq("activation_code_id", businessActivationCode.getId());
                     ClientUserCode clientUserCode = iClientUserCodeService.getOne(clientUserCodeQueryWrapper);
-                    if(null == clientUserCode){
+                    if (null == clientUserCode) {
                         ClientUserCode clientUserCode1 = new ClientUserCode();
                         clientUserCode1.setActivationCode(businessActivationCode.getActivationCode());
                         clientUserCode1.setActivationCodeId(businessActivationCode.getId());
@@ -168,19 +167,19 @@ public class BusinessActivationCodeController {
                         clientUserCode1.setUpdateTime(LocalDateTime.now());
                         clientUserCode1.setStatus(0);
                         boolean save = iClientUserCodeService.save(clientUserCode1);
-                        if (!save){
+                        if (!save) {
                             //注册码已经存在，证明已经被使用了
                             return ResultUtil.error(ResultEnum.PARAMETER_ERROR);
                         }
-                    }else{
+                    } else {
                         return ResultUtil.error(ResultEnum.PARAMETER_ERROR);
                     }
                     return ResultUtil.success(businessActivationCode);
                 }
-            }else {
+            } else {
                 return ResultUtil.error(ResultEnum.PARAMETER_ERROR);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ResultUtil.success(null);

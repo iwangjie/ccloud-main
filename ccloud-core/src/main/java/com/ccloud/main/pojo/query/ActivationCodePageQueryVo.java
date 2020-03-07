@@ -6,7 +6,7 @@ import lombok.Data;
  * @author wangjie
  */
 @Data
-public class UpdatePageQueryVo {
+public class ActivationCodePageQueryVo {
 
     /**
      * 每页显示条数，默认 10
