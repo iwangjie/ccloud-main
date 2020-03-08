@@ -2,11 +2,11 @@ package com.ccloud.main.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import com.ccloud.main.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -25,6 +25,11 @@ public class BusinessLeavemessageMain extends BaseEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    /**
+     * 所属appid
+     */
+    private Integer appId;
 
     /**
      * 留言标题
