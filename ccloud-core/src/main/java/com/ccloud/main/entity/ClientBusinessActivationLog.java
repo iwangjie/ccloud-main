@@ -30,6 +30,11 @@ public class ClientBusinessActivationLog extends BaseEntity {
     private Integer id;
 
     /**
+     * 应用ID
+     */
+    private Integer appId;
+
+    /**
      * C端用户id
      */
     private Integer userId;
