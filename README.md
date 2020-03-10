@@ -6,7 +6,12 @@
 
 `C-Cloud` 使用了轻量级 Web开发框架 SpringBoot 进行开发，并且易于扩展，如果对你有帮助，欢迎 Star 或 Fork 参与开发。
 
-演示网址: 搭建中
+
+本项目为 C-CLOUD 后端项目
+
+前端项目移步：https://github.com/iwangjie/ccloud-web
+
+演示 APP 移步：https://github.com/iwangjie/C-CLOUD-DEMO
 
 ## 功能
 
@@ -26,12 +31,18 @@
 
 运行前端项目所需环境如下：
 1.NODE
+
 2.WebStorm
 
+
 运行后端项目所需环境如下：
+
 1.JDK1.8以上运行环境
+
 2.IDEA
+
 3.MYSQL
+
 4.REDIS
 
 
